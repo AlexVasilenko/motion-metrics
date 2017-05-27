@@ -1,0 +1,98 @@
+@import './../../../../styles/_colors';
+@import './../../../../styles/_typography';
+
+
+hr {
+  background-color: $separator;
+  height: 1px;
+  border: none;
+}
+
+
+nav {
+  transition-property: background-color;
+  transition-duration: .3s;
+
+  &.edit-mode {
+    background-color: $selectedRow;
+    color: $enableText;
+    .initials {
+      background-color: initial;
+    }
+  }
+
+  background-color: $navBar;
+  display: flex;
+  color: #ffffff;
+
+  @include desktop {
+    line-height: 50px;
+    height: 50px;
+  }
+
+  @include mobile {
+    line-height: 45px;
+    height: 45px;
+  }
+}
+
+.title {
+  @include pageTitle;
+  flex: 1;
+  padding-left: 20px;
+}
+
+.logo {
+  background-color: #000000;
+  color: gray;
+  text-align: center;
+
+  @include desktop {
+    width: 50px;
+    line-height: 50px;
+  }
+
+  @include mobile {
+    width: 45px;
+    line-height: 45px;
+  }
+}
+
+.username {
+  @include body;
+  @include mobile {
+    display: none;
+  }
+}
+
+/deep/.initials {
+  @include desktop {
+    display: none;
+  }
+  @include mobile {
+  @include label;
+  height: 25px;
+  width: 25px;
+  background-color: #333333 !important;
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: inline-block;
+  line-height: 25px;
+  text-align: center;
+  align-self: center; }
+}
+
+
+/deep/ .mat-icon-button {
+  &.back {
+    color: #ccc;
+  }
+}
+
+nav {
+  @include desktop {
+  .mat-icon-button {
+      height: 50px !important;
+    }
+  }
+}
