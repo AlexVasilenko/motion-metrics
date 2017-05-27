@@ -1,0 +1,188 @@
+@import './../../../../styles/colors';
+@import './../../../../styles/typography';
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+.mobile-container {
+  align-self: center;
+  flex: 1;
+  overflow: auto;
+  max-width: 1280px;
+  width: 100%;
+}
+
+.desktop-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 0;
+  overflow: hidden;
+}
+
+.desktop-list {
+  box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
+  .item-wrapper {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  overflow: auto;
+  @include body;
+  /deep/ .mat-list-item-content {
+    flex-direction: column;
+    width: 100%;
+    height: 88px  !important;
+    justify-content: center;
+  }
+
+  flex: 1;
+  padding-left: 16px; //FIXME: why do we need that?
+  width: 100%;
+
+  .item {
+    color: $enableText;
+
+    &.disabled {
+      color: $disableText;
+    }
+    &:hover {
+      @include desktop {
+        background-color: $contentHover;
+      }
+    }
+    display: flex;
+    width: 100%;
+  }
+}
+
+.selected {
+  background-color: $selectedRow;
+}
+.headers {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  @include columnHeader;
+  color: $activeText;
+
+  .with-border {
+    box-sizing: border-box;
+    border-bottom: solid $separator 1px;
+  }
+}
+
+.col-avatar {
+  flex: 1;
+}
+
+.col-title {
+  flex: 4;
+}
+
+.col-timezone {
+  flex: 3;
+}
+
+.col-time {
+  flex: 2;
+}
+
+.col-repeat {
+  flex: 2;
+}
+
+
+.mobile-list {
+  /deep/ .mat-list-item-content {
+    align-items: flex-start !important;
+    height: 125px  !important;
+    width: 100%;
+  }
+
+  .item {
+    transition-property: background-color;
+    transition-duration: .3s;
+    &.selected:hover {
+      background-color: $selectedRow;
+    }
+    &:hover {
+      @include desktop {
+        background-color: $contentHover;
+      }
+    }
+
+    &:first-child {
+      margin-top: 24px;
+    }
+
+    height: 127px;
+    display: flex;
+
+    .disabled {
+      h3 {
+        color: $disableText;
+      }
+      p {
+        color: $inactiveText;
+      }
+    }
+
+    h3 {
+      @include body;
+      color: $enableText;
+      width: 100%;
+      text-overflow: ellipsis;
+      margin: 0;
+      white-space: nowrap;
+      overflow: visible;
+    }
+    p {
+      margin: 0;
+      color: $enableText;
+    }
+  }
+
+  .avatar {
+    margin-top: 10px;
+  }
+
+  .text {
+    margin-left: 14px;
+    overflow: hidden;
+    flex: 1;
+    height: 115px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: solid $separator 1px;
+    /deep/ p {
+      text-overflow: ellipsis !important;
+    }
+  }
+}
+
+@include mobile {
+  /deep/ .mat-dialog-title {
+    font-size: 18px !important;
+  }
+}
