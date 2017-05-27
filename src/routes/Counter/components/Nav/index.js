@@ -22,8 +22,8 @@ export const Nav = ({ isEditMode, user }) => (
 
     <IconMenu
       iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-      anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-      targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
       <MenuItem primaryText='Account Info' leftIcon={<AccountCircle />} />
       <MenuItem primaryText='Settings' leftIcon={<Settings />} />

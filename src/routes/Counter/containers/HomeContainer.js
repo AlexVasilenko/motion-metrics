@@ -6,7 +6,7 @@ import { increment, doubleAsync } from '../modules/counter'
     wiring in the actions and state necessary to render a presentational
     component - in this case, the counter:   */
 
-import Nav from '../components/Nav'
+import AppBar from '../components/app-bar'
 
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
@@ -35,4 +35,4 @@ const mapStateToProps = (state) => ({
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nav)
+export default connect(mapStateToProps, mapDispatchToProps)(AppBar)
