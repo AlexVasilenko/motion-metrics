@@ -13,7 +13,7 @@ import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 import styles from './styles.scss'
 
 
-export const AppBar = ({ selected }) => (
+export const AppBar = ({ selected, isMobile }) => (
   <div className='wrapper'>
     <nav>
       <FloatingActionButton className='fab'>
@@ -35,7 +35,7 @@ export const AppBar = ({ selected }) => (
       <IconButton>
         <Close />
       </IconButton>
-      <span className='title '>1 selected</span>
+      <span className='title '>{selected.length} selected</span>
       <IconButton >
         <EditIcon />
       </IconButton>
@@ -46,7 +46,8 @@ export const AppBar = ({ selected }) => (
   </div>
 )
 AppBar.propTypes = {
-    selected: PropTypes.Array,
+  selected: PropTypes.Array,
+  isMobile: PropTypes.bool,
 }
 
 export default AppBar

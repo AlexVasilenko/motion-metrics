@@ -112,10 +112,12 @@ let tasks = [
   },
 ]
 
+let selected = []
+
 export const HomeView = () => (
   <div>
-    <Nav />
-    <AppBar />
+    <Nav selected={selected} />
+    <AppBar selected={selected} />
     <TaskList task={tasks} />
   </div>
 )

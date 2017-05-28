@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { List, ListItem } from 'material-ui/List'
-import Avatar from 'material-ui/Avatar'
 import MobileList from './../MobileList'
 import DesktopList from './../DesktopList'
 
