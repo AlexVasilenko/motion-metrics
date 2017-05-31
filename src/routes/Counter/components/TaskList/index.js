@@ -6,15 +6,15 @@ import DesktopList from './../DesktopList'
 import styles from './styles.scss'
 
 
-export const TaskList = ({ task, isMobile }) => (
+export const TaskList = ({ tasks, isMobile }) => (
   <div>
     {
-    isMobile ? (<MobileList task={task} />) : (<DesktopList task={task} />)
+    isMobile ? (<MobileList tasks={tasks} />) : (<DesktopList tasks={tasks} />)
     }
   </div>
 )
 TaskList.propTypes = {
-  task: PropTypes.array,
+  tasks: PropTypes.array,
   isMobile: PropTypes.bool,
 }
 

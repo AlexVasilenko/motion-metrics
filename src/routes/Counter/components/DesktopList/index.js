@@ -4,7 +4,7 @@ import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 
 
-export const DesktopList = ({ task }) => (
+export const DesktopList = ({ tasks }) => (
   <div className='desktop-container '>
     <div className='headers '>
       <div className='col-avatar '></div>
@@ -14,7 +14,7 @@ export const DesktopList = ({ task }) => (
       <div className='col-repeat with-border '>Repeat</div>
     </div>
     <List className='desktop-list '>
-      { task.map((task1, i) => {
+      { tasks.map((task1, i) => {
         return (
           <ListItem className='item '>
             <div className='item-wrapper '>
@@ -30,7 +30,7 @@ export const DesktopList = ({ task }) => (
   </div>
 )
 DesktopList.propTypes = {
-  task: PropTypes.array,
+  tasks: PropTypes.array,
 }
 
 export default DesktopList
