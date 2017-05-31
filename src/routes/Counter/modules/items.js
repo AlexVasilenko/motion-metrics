@@ -4,21 +4,19 @@ export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
 export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
 export const DOWNLOAD_ITEMS_ERROR = 'DOWNLOAD LIST ELEMENTS ERROR'
 
-export function download () {
+export const SELECT_ITEMS = 'SELECT ITEM'
+
+export function onSelect (id) {
   return {
-    type    : DOWNLOADING_ITEMS,
+    type    : SELECT_ITEMS,
+    payload : id
   }
 }
 
-debugger
-
 export const downloadItems = () => {
   return (dispatch, getState) => {
-    debugger
     return new Promise((resolve) => {
-      debugger
       setTimeout(() => {
-        debugger;
         dispatch({
           type    : DOWNLOADED_ITEMS,
           payload : getAllList()
@@ -30,7 +28,8 @@ export const downloadItems = () => {
 }
 
 export const actions = {
-  downloadItems
+  downloadItems,
+  onSelect
 }
 
 // ------------------------------------
@@ -38,13 +37,18 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [DOWNLOADING_ITEMS]   : (state, action) => !state.loading,
-  [DOWNLOADED_ITEMS]    : (state, action) => {
-    debugger
-    return ({
-      loading: false,
-      items: action.payload,
-    })
-  },
+  [DOWNLOADED_ITEMS]    : (state, action) => ({
+    loading: false,
+    items: action.payload,
+  }),
+  [SELECT_ITEMS]        : (state, action) => {
+    let selectItem = state.items.find((item) => item.id === action.payload)
+
+    selectItem.select = true
+    return {
+      ...state.items,
+    }
+  }
 }
 
 // ------------------------------------
@@ -56,7 +60,6 @@ const initialState = {
 }
 export default function itemsReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
-  debugger
 
   return handler ? handler(state, action) : state
 }
