@@ -9,7 +9,8 @@ import styles from './styles.scss'
 export const TaskList = ({ tasks, isMobile, onSelect }) => (
   <div>
     {
-    isMobile ? (<MobileList tasks={tasks} onSelectElement={onSelect} />) : (<DesktopList tasks={tasks} />)
+        // не нравиться что передаю функцию но не использую в компоненте
+    isMobile ? (<MobileList tasks={tasks} onSelect={onSelect} />) : (<DesktopList tasks={tasks} onSelect={onSelect} />)
     }
   </div>
 )

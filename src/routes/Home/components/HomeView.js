@@ -21,6 +21,7 @@ class HomeView extends React.Component {
   }
 
   render () {
+    // что-то нужно сделать с items
     return (<div>
       <Nav selected={selected} />
       <AppBar selected={selected} />

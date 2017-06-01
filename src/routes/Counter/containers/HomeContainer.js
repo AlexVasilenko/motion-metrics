@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { downloadItems } from '../modules/items'
+import { actions } from '../modules/items'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -12,9 +12,7 @@ import HomeView from './../../Home/components/HomeView.js'
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
 
-const mapDispatchToProps = {
-  downloadItems
-}
+const mapDispatchToProps = actions
 
 const mapStateToProps = (state) => ({
   items : state.items

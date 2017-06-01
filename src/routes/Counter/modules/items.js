@@ -44,9 +44,9 @@ const ACTION_HANDLERS = {
   [SELECT_ITEMS]        : (state, action) => {
     let selectItem = state.items.find((item) => item.id === action.payload)
 
-    selectItem.select = true
+    selectItem.select = !selectItem.select
     return {
-      ...state.items,
+      ...state,
     }
   }
 }

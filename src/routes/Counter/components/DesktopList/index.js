@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
+import classNames from 'classnames'
 
 
-export const DesktopList = ({ tasks,  onSelectElement}) => (
+export const DesktopList = ({ tasks,  onSelect}) => (
   <div className='desktop-container '>
     <div className='headers '>
       <div className='col-avatar '></div>
@@ -15,8 +16,12 @@ export const DesktopList = ({ tasks,  onSelectElement}) => (
     </div>
     <List className='desktop-list '>
       { tasks.map((task, i) => {
+          const selectClass = classNames({
+              item: true,
+              selected: task.select
+          });
         return (
-          <ListItem className='item ' >
+          <ListItem className={selectClass} onClick={onSelect.bind(this, task.id)}>
             <div className='item-wrapper '>
               <Avatar className='avatar col-avatar '></Avatar>
               <div className='col-title text '>{ task.title }</div>

@@ -73,7 +73,7 @@
 }
 
 .selected {
-  background-color: $selectedRow;
+  background-color: $selectedRow !important;
 }
 .headers {
   flex-shrink: 0;
