@@ -57,6 +57,7 @@ const ACTION_HANDLERS = {
 const initialState = {
   loading: false,
   items: [],
+  selectedItems: 0
 }
 export default function itemsReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

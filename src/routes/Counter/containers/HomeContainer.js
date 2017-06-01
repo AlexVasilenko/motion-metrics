@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { actions } from '../modules/items'
+import { createSelector } from 'reselect'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -14,8 +15,13 @@ import HomeView from './../../Home/components/HomeView.js'
 
 const mapDispatchToProps = actions
 
+const selectFn = (state) => state.items.items.filter((item) => item.select).length
+
+const selectedCount = createSelector(selectFn, (count) => count)
+
 const mapStateToProps = (state) => ({
-  items : state.items
+  items : state.items,
+  selectedItems: selectedCount(state)
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
