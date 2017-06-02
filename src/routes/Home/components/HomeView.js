@@ -24,7 +24,7 @@ class HomeView extends React.Component {
     // что-то нужно сделать с items
     return (<div>
       <Nav selectMode={this.props.selectedItems} />
-      <AppBar selected={this.props.selectedItems} />
+      <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
       <TaskList tasks={this.props.items.items} onSelect={this.props.onSelect} />
     </div>)
   }

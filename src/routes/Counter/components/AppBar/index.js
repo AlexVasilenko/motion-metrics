@@ -9,18 +9,17 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit'
 import Search from 'material-ui/svg-icons/action/search'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Close from 'material-ui/svg-icons/navigation/close'
-import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 
 import styles from './styles.scss'
 
 
-const selectAppBar = (selected, selectClass) => (
+const selectAppBar = (selected, selectClass, unselect) => (
     <div className={selectClass}>
-      <nav className='selection-nav '>
-        <IconButton>
+      <nav className='selection-nav edit-mode'>
+        <IconButton onClick={unselect}>
           <Close />
         </IconButton>
-        { selected ? <span className='title '>{selected} selected</span> : ''}
+        { selected ? <span className='title'>{selected} selected</span> : ''}
         { selected === 1 ? <IconButton ><EditIcon /></IconButton> : '' }
         <IconButton>
           <Delete />
@@ -31,7 +30,7 @@ const selectAppBar = (selected, selectClass) => (
 
 const unselectAppBar = (selected) => (
     <div className='wrapper'>
-      <nav>
+      <nav className="app-bar">
         <FloatingActionButton className='fab'>
           <ContentAdd />
         </FloatingActionButton>
@@ -48,14 +47,14 @@ const unselectAppBar = (selected) => (
 )
 
 
-export const AppBar = ({ selected, isMobile }) => {
+export const AppBar = ({ selected, isMobile, unselect }) => {
   const selectClass = classNames({
     wrapper: true,
     'selection-mode': selected
   });
 
   if (selected) {
-    return selectAppBar(selected, selectClass);
+    return selectAppBar(selected, selectClass, unselect);
   }
   return unselectAppBar();
 }

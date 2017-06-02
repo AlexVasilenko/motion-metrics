@@ -11,10 +11,9 @@ $mobileHeight: 64px;
   align-items: center;
 }
 
-md-icon {
-  cursor: pointer;
+.app-bar {
+  background-color: $appBar;
 }
-
 
 .wrapper {
   transition-property: background-color;
