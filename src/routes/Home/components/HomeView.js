@@ -1,7 +1,7 @@
 import React from 'react'
 import './HomeView.scss'
-import Nav from './../../Counter/components/Nav'
-import AppBar from './../../Counter/components/AppBar'
+import Nav from '../../../components/Nav'
+import AppBar from '../../../components/AppBar'
 import TaskList from './../../Counter/components/TaskList'
 import PropTypes from 'prop-types'
 
