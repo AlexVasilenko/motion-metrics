@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { actions } from '../modules/items'
+import { actions } from '../modules/form'
 import { createSelector } from 'reselect'
 
 /*  This is a container component. Notice it does not contain any JSX,
@@ -15,14 +15,14 @@ import HomeView from './../components/HomeView.js'
 
 const mapDispatchToProps = actions
 
-const selectFn = (state) => state.items.items.filter((item) => item.select).length
 
-const selectedCount = createSelector(selectFn, (count) => count)
-
-const mapStateToProps = (state) => ({
-  items : state.items,
-  selectedItems: selectedCount(state)
-})
+const mapStateToProps = (state) => {
+  return {
+      form: state.form.form,
+      user: state.form.user,
+      isEditMode: state.form.isEditMode
+  }
+}
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 

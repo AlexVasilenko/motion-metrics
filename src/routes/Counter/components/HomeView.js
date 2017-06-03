@@ -9,9 +9,7 @@ let selected = []
 
 class HomeView extends React.Component {
   static propTypes = {
-    items: PropTypes.object.isRequired,
-    downloadItems: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
+
   }
 
   constructor (props) {
@@ -21,10 +19,11 @@ class HomeView extends React.Component {
 
   render () {
     // что-то нужно сделать с items
+    debugger;
     return (<div>
       <Nav selectMode={this.props.selectedItems} />
       <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
-      <Form />
+      <Form isEditMode={this.props.isEditMode} user={this.props.user} form={this.props.form}/>
     </div>)
   }
 }

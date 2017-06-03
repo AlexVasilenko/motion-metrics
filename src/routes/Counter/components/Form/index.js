@@ -19,24 +19,26 @@ import Devices from 'material-ui/svg-icons/device/devices'
 import LinearScale from 'material-ui/svg-icons/editor/linear-scale'
 import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
 
+import './form.scss'
+
 
 export const Form = ({ isEditMode, user, form }) => (
   <div className='container'>
   <div className="step">
-    <form className="general" action="#" novalidate>
+    <form className="general" action="#" noValidate>
       <h1>General Setting</h1>
       <Slider className="enable-toggle" formControlName="enabled" name="enabled">
         { form.enabled ? 'Task enabled' : 'Task disabled' }
       </Slider>
       <span>
-        <input mdInput placeholder="Task Title" name="title" formControlName="title" required />
+        <input placeholder="Task Title" name="title" formControlName="title" required />
         <div>This is required.</div>
         <div>A task with this name already exists.</div>
         <div>Task title must be less than 50 characters long.</div>
       </span>
       <div className="form-control focusable-icon">
         <div className="form-control-main select-wrapper">
-          <input style="display: none;" name="type" formControlName="type" />
+          <input name="type" formControlName="type" />
           <SelectField placeholder="Task Type" formControlName="type" name="type"
             required>
             <MenuItem value={1} primaryText="Payload Monitoring Report" />
@@ -52,13 +54,12 @@ export const Form = ({ isEditMode, user, form }) => (
           <div className="form-control-main">
             <input placeholder="Time Zone" required formControlName="timeZone" />
             <div>This is required.</div>
-            <AutoComplete />
           </div>
           <Place />
         </div>
         <div className="form-control focusable-icon">
           <div className="form-control-main date-wrapper">
-            <input style="display: none;" mdInput name="reportTime" formControlName="reportTime" />
+            <input mdInput name="reportTime" formControlName="reportTime" />
             <TimePicker hintText="12hr Format" type="time" formControlName="reportTime" required placeholder="Report Time"
               name="time" />
             <div>This is required.</div>
@@ -70,14 +71,14 @@ export const Form = ({ isEditMode, user, form }) => (
       <div className="form-group">
         <div className="form-control focusable-icon">
           <div className="form-control-main date-wrapper">
-            <input style="display: none;" name="type" formControlName="type" />
+            <input name="type" formControlName="type" />
             <DatePicker hintText="Landscape Inline Dialog" container="inline" mode="landscape" formControlName="from" required placeholder="From" name="from" />
             <div>This is required.</div>
           </div>
           <Today />
         </div>
         <div className="form-control select-wrapper focusable-icon">
-          <input style="display: none;" mdInput name="type" formControlName="repeat" />
+          <input name="type" formControlName="repeat" />
           <SelectField placeholder="Repeat" formControlName="repeat" name="type"
             required multiple align="end">
             <MenuItem value={1} align="end" primaryText="Monday" />
@@ -100,7 +101,7 @@ export const Form = ({ isEditMode, user, form }) => (
         <RaisedButton label="Submit" primary={true} />
       </div>
     </form>
-    <form className="general" action="#" novalidate>
+    <form className="general" action="#" noValidate>
       <h1>Configuration</h1>
       <div className="form-control focusable-icon" formGroupName="configuration">
         <input name="equipment" />
@@ -108,7 +109,7 @@ export const Form = ({ isEditMode, user, form }) => (
       </div>
       <div className="form-control focusable-icon">
         <div className="form-control-main select-wrapper">
-          <input style="display: none;" name="unit" />
+          <input name="unit" />
           <SelectField placeholder="Unit System Setting" name="type" required
             formControlName="unit">
             <MenuItem value={1} primaryText="m kg s" />

@@ -73,11 +73,13 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  loading: false,
-  items: [],
-  selectedItems: 0
+  isEditMode: false,
+  user: {},
+  form: {
+    enabled: false,
+  }
 }
-export default function itemsReducer (state = initialState, action) {
+export default function formReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state
