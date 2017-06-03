@@ -21,7 +21,7 @@ const DesktopList = ({ tasks,  onSelect}) => (
               selected: task.select
           });
         return (
-          <ListItem className={selectClass} onClick={onSelect.bind(this, task.id)}>
+          <ListItem className={selectClass} onClick={onSelect.bind(this, task.id)} key={i}>
             <div className='item-wrapper '>
               <Avatar className='avatar col-avatar '></Avatar>
               <div className='col-title text '>{ task.title }</div>

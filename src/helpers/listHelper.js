@@ -1,6 +1,7 @@
 export const repeatGenerate = (repeat) => {
     const joinRepeat = repeat.join(',');
 
+    // move to config
     const daysAndPartOfDays = {
         '6,7': 'Weekend',
         '1,2,3,4,5': 'Weekdays',

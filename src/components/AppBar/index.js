@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import Snackbar from 'material-ui/Snackbar'
+import Modal from '../../components/modal'
 
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit'
@@ -16,28 +17,8 @@ import Close from 'material-ui/svg-icons/navigation/close'
 import './styles.scss'
 
 const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, onDelete) => {
-  const actions = [
-    <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={onClose}
-    />,
-    <FlatButton
-        label="Delete"
-        primary={true}
-        onTouchTap={onDelete}
-    />,
-  ]
   return (
       <div className={selectClass}>
-        <Dialog
-            actions={actions}
-            modal={false}
-            open={isOpen}
-            onRequestClose={onClose}
-        >
-          Delete selected tasks?
-        </Dialog>
         <nav className='selection-nav edit-mode'>
           <IconButton onClick={unselect}>
             <Close />
@@ -76,7 +57,7 @@ const unselectAppBar = (snack, closeSnack) => (
 
 export class AppBar extends React.Component {
   static propTypes = {
-    selected: PropTypes.Array,
+    selected: PropTypes.number,
     isMobile: PropTypes.bool,
   }
 
@@ -134,7 +115,27 @@ export class AppBar extends React.Component {
     });
 
     if (selected) {
-      return selectAppBar(selected, selectClass, this.props.unselect, this.handleClose, this.handleOpen, this.state.isOpen, this.handleDelete);
+      return (
+          <div className={selectClass}>
+            <Modal
+             onClose={this.handleClose}
+             onDelete={this.handleDelete}
+             isOpen={this.state.isOpen}
+            >
+              Delete this items?
+            </Modal>
+            <nav className='selection-nav edit-mode'>
+              <IconButton onClick={this.props.unselect}>
+                <Close />
+              </IconButton>
+              { selected ? <span className='title'>{selected} selected</span> : ''}
+              { selected === 1 ? <IconButton ><EditIcon /></IconButton> : '' }
+              <IconButton onClick={this.handleOpen}>
+                <Delete />
+              </IconButton>
+            </nav>
+          </div>
+      )
     }
     return unselectAppBar(this.state.snack, this.snackClose);
   }
