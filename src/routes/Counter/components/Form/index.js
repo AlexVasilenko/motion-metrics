@@ -13,7 +13,7 @@ import Assignment from 'material-ui/svg-icons/action/assignment'
 import Place from 'material-ui/svg-icons/maps/place'
 import AccessTime from 'material-ui/svg-icons/device/access-time'
 import Today from 'material-ui/svg-icons/action/today'
-import Repeat from 'material-ui/svg-icons/AV/repeat'
+import Repeat from 'material-ui/svg-icons/av/repeat'
 import People from 'material-ui/svg-icons/social/people'
 import Devices from 'material-ui/svg-icons/device/devices'
 import LinearScale from 'material-ui/svg-icons/editor/linear-scale'
@@ -36,7 +36,6 @@ export const Form = ({ isEditMode, user, form }) => (
       </span>
       <div className="form-control focusable-icon">
         <div className="form-control-main select-wrapper">
-          <!-- don't ask - this is the way material for angular2 is working -->
           <input style="display: none;" name="type" formControlName="type" />
           <SelectField placeholder="Task Type" formControlName="type" name="type"
             required>
@@ -109,7 +108,6 @@ export const Form = ({ isEditMode, user, form }) => (
       </div>
       <div className="form-control focusable-icon">
         <div className="form-control-main select-wrapper">
-          <!-- don't ask - this is the way material for angular2 is working -->
           <input style="display: none;" name="unit" />
           <SelectField placeholder="Unit System Setting" name="type" required
             formControlName="unit">

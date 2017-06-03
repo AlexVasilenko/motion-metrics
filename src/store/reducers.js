@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import locationReducer from './location'
-import itemsReducer from './../routes/Counter/modules/items'
+import itemsReducer from '../routes/Home/modules/items'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({

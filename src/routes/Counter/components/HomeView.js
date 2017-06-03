@@ -2,7 +2,7 @@ import React from 'react'
 import './HomeView.scss'
 import Nav from '../../../components/Nav'
 import AppBar from '../../../components/AppBar'
-import TaskList from '../../Home/components/TaskList'
+import Form from './Form'
 import PropTypes from 'prop-types'
 
 let selected = []
@@ -24,7 +24,7 @@ class HomeView extends React.Component {
     return (<div>
       <Nav selectMode={this.props.selectedItems} />
       <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
-      <TaskList tasks={this.props.items.items} onSelect={this.props.onSelect} />
+      <Form />
     </div>)
   }
 }
