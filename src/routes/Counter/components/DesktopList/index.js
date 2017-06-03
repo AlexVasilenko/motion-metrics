@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import classNames from 'classnames'
+import { repeatGenerate } from '../../../../helpers/listHelper'
 
-
-export const DesktopList = ({ tasks,  onSelect}) => (
+const DesktopList = ({ tasks,  onSelect}) => (
   <div className='desktop-container '>
     <div className='headers '>
       <div className='col-avatar '></div>
@@ -27,7 +27,7 @@ export const DesktopList = ({ tasks,  onSelect}) => (
               <div className='col-title text '>{ task.title }</div>
               <div className='col-timezone '>{ task.timeZone }</div>
               <div className='col-time '>{ task.reportTime.toString() }</div>
-              <div className='col-repeat '>{ task.repeat }</div>
+              <div className='col-repeat '>{ repeatGenerate(task.repeat) }</div>
             </div>
           </ListItem>)
       }) }

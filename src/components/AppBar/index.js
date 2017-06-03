@@ -13,6 +13,8 @@ import Search from 'material-ui/svg-icons/action/search'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Close from 'material-ui/svg-icons/navigation/close'
 
+import './styles.scss'
+
 const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, onDelete) => {
   const actions = [
     <FlatButton

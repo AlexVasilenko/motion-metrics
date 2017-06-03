@@ -11,7 +11,7 @@ import VerifiedUser from 'material-ui/svg-icons/action/verified-user'
 import ExitToApp from 'material-ui/svg-icons/action/exit-to-app'
 import classNames from 'classnames'
 
-import styles from './styles.scss'
+import './styles.scss'
 
 
 export const Nav = ({ selectMode, user }) => {
