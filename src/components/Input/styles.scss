@@ -1,0 +1,167 @@
+@import '../../styles/_colors';
+@import '../../styles/_typography';
+
+$desktopHeight: 100px;
+$mobileHeight: 64px;
+
+.back {
+  margin-right: 10vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-bar {
+  background-color: $appBar;
+}
+
+.wrapper {
+  transition-property: background-color;
+  transition-duration: .3s;
+
+  button {
+    display: flex;
+    justify-content: center;
+  }
+  &.selection-mode {
+    background-color: $selectedRow;
+  }
+  background-color: $appBar;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.32);
+
+  @include mobile {
+    height: $mobileHeight;
+    line-height: $mobileHeight;
+  }
+
+  @include desktop {
+    height: $desktopHeight;
+    line-height: $desktopHeight;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 16px;
+  @include appTitle;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  text-transform: uppercase;
+  .mat-fab {
+    .mat-icon {
+      height: 50px;} }
+}
+
+.active {
+  flex: 2;
+}
+
+.inputContainer {
+  height: 24px;
+  display: flex;
+  width: 0;
+  transition-duration: .5s;
+  transition-property: flex;
+  overflow: hidden;
+  input {
+    flex: 1;
+    display: inline;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    min-width: 150px;
+    color: $activeText;
+    font-size: 16px;
+    &::placeholder {
+      color: $inactiveText !important;
+      font-size: 16px !important;
+    }
+    &::-moz-placeholder {
+      color: $inactiveText !important;
+      font-size: 16px !important;
+    }
+    &::-webkit-input-placeholder {
+      color: $inactiveText !important;
+      font-size: 16px !important;
+    }
+    &:-ms-input-placeholder {
+      color: $inactiveText !important;
+      font-size: 16px !important;
+    }
+  }
+
+  border-bottom: solid 1px $inactiveText;
+}
+
+.title {
+  display: inline-block;
+  transition-property: flex;
+  transition-duration: .3s;
+  white-space: nowrap;
+  &.hidden {
+    width: 0;
+    color: transparent;
+    flex: 0;
+    overflow: hidden;
+  }
+  flex: 4;
+  padding: 0 16px;
+}
+
+.fab {
+  z-index: 1;
+  position: relative;
+  background-color: $accent;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0) !important;
+  color: white;
+  &:hover {
+    background-color: $accentHover;
+  }
+
+  @include desktop {
+    top: #{$desktopHeight / 2};
+  }
+
+  @include mobile {
+    top: #{$mobileHeight / 2};
+    md-icon {
+      padding: 9px 0;
+    }
+    width: 42px;
+    height: 42px;
+  }
+}
+
+nav.selectionNav {
+  color: $enableText;
+  .mat-icon-button {
+    @include mobile {
+      height: auto;
+    }
+
+    &:first-child {
+      .material-icons {
+
+        @include desktop {
+          line-height: 43px;
+          font-size: 36px;
+          width: 36px;
+          height: 45px;
+        }
+
+        @include mobile {
+          line-height: 24px;
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+}

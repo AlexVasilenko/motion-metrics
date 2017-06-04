@@ -38,7 +38,7 @@ export const Form = ({ isEditMode, user, form }) => (
       </span>
       <div className="form-control focusable-icon">
         <div className="form-control-main select-wrapper">
-          <input name="type" formControlName="type" />
+          <Assignment />
           <SelectField placeholder="Task Type" formControlName="type" name="type"
             required>
             <MenuItem value={1} primaryText="Payload Monitoring Report" />
@@ -47,38 +47,35 @@ export const Form = ({ isEditMode, user, form }) => (
           </SelectField>
           <div>This is required.</div>
         </div>
-        <Assignment />
       </div>
       <div className="form-group">
         <div className="form-control focusable-icon">
           <div className="form-control-main">
+            <Place />
             <input placeholder="Time Zone" required formControlName="timeZone" />
             <div>This is required.</div>
           </div>
-          <Place />
         </div>
         <div className="form-control focusable-icon">
+          <AccessTime />
           <div className="form-control-main date-wrapper">
-            <input mdInput name="reportTime" formControlName="reportTime" />
             <TimePicker hintText="12hr Format" type="time" formControlName="reportTime" required placeholder="Report Time"
               name="time" />
             <div>This is required.</div>
           </div>
-          <AccessTime />
         </div>
       </div>
 
       <div className="form-group">
         <div className="form-control focusable-icon">
+          <Today />
           <div className="form-control-main date-wrapper">
-            <input name="type" formControlName="type" />
             <DatePicker hintText="Landscape Inline Dialog" container="inline" mode="landscape" formControlName="from" required placeholder="From" name="from" />
             <div>This is required.</div>
           </div>
-          <Today />
         </div>
         <div className="form-control select-wrapper focusable-icon">
-          <input name="type" formControlName="repeat" />
+          <Repeat />
           <SelectField placeholder="Repeat" formControlName="repeat" name="type"
             required multiple align="end">
             <MenuItem value={1} align="end" primaryText="Monday" />
@@ -89,12 +86,11 @@ export const Form = ({ isEditMode, user, form }) => (
             <MenuItem value={6} primaryText="Saturday" />
             <MenuItem value={7} primaryText="Sunday" />
           </SelectField>
-          <Repeat />
         </div>
       </div>
       <div className="form-control tags-wrapper focusable-icon">
-        <input placeholder="recipient" />
         <People />
+        <input placeholder="recipient" />
       </div>
       <div className="buttons">
         <RaisedButton label="Cancel" />
@@ -104,12 +100,12 @@ export const Form = ({ isEditMode, user, form }) => (
     <form className="general" action="#" noValidate>
       <h1>Configuration</h1>
       <div className="form-control focusable-icon" formGroupName="configuration">
-        <input name="equipment" />
         <Devices />
+        <input name="equipment" />
       </div>
       <div className="form-control focusable-icon">
         <div className="form-control-main select-wrapper">
-          <input name="unit" />
+          <LinearScale />
           <SelectField placeholder="Unit System Setting" name="type" required
             formControlName="unit">
             <MenuItem value={1} primaryText="m kg s" />
@@ -119,7 +115,6 @@ export const Form = ({ isEditMode, user, form }) => (
           </SelectField>
           <div>This is required.</div>
         </div>
-        <LinearScale />
       </div>
       <h2>Report Components</h2>
       <div formGroupName="configuration" className="configuration">
