@@ -14,16 +14,19 @@ class HomeView extends React.Component {
 
   constructor (props) {
     super()
-    props.downloadItems()
   }
 
   render () {
     // что-то нужно сделать с items
-    debugger;
     return (<div>
       <Nav selectMode={this.props.selectedItems} />
       <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
-      <Form isEditMode={this.props.isEditMode} user={this.props.user} form={this.props.form}/>
+      <Form
+          isEditMode={this.props.isEditMode}
+          user={this.props.user}
+          form={this.props.form}
+          step={this.props.form.step}
+          saveItem={this.props.newItem} />
     </div>)
   }
 }
