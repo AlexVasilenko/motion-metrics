@@ -26,12 +26,36 @@ class GeneralSettings extends React.Component {
   constructor() {
     super()
     this.state = {
-
+      enabled: false,
+      title: '',
+      monitoringReport: '',
+      timeZone: '',
+      from: '',
+      recipient: '',
     }
+    this.onChange = this.onSubmit()
+    this.submit = this.submitHandle()
+    this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
+    this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
+    this.handleDate = (event, value) => this.setState({ from: value })
   }
 
   onSubmit() {
-    debugger
+    return () => {
+      this.setState({
+        enabled: !this.state.enabled,
+      })
+    }
+  }
+
+  submitHandle() {
+    return () => {
+      const values = {
+        enabled: this.state.enabled,
+        title: this.title.getValue(),
+      }
+      this.props.saveItem('generalSetting', values)
+    }
   }
 
   render() {
@@ -46,20 +70,27 @@ class GeneralSettings extends React.Component {
               <span>
               <div>
                 <Toggle
-                    label={ form.enabled ? 'Task enabled' : 'Task disabled' }
+                    onToggle={this.onChange}
+                    label={ this.state.enabled ? 'Task enabled' : 'Task disabled' }
+                    ref={(enabled) => this.enabled = enabled}
                 />
               </div>
          <TextField
              hintText="Task Title"
              errorText="This field is required"
              name="title"
+             ref={(title) => this.title = title}
          /><br />
       </span>
               <div className="form-control focusable-icon">
                 <div className="form-control-main select-wrapper">
                   <Assignment />
-                  <SelectField placeholder="Task Type" formControlName="type" name="type"
-                               required>
+                  <SelectField
+                      placeholder="Task Type"
+                      formControlName="type"
+                      name="type"
+                      value={this.state.monitoringReport}
+                      onChange={this.handleMonitoringReport} >
                     <MenuItem value={1} primaryText="Payload Monitoring Report"/>
                     <MenuItem value={2} primaryText="Fragmentation Monitoring Report"/>
                     <MenuItem value={3} primaryText="Tooth Detection Report"/>
@@ -78,9 +109,11 @@ class GeneralSettings extends React.Component {
                 <div className="form-control focusable-icon">
                   <AccessTime />
                   <div className="form-control-main date-wrapper">
-                    <TimePicker hintText="12hr Format" type="time" formControlName="reportTime" required
+                    <TimePicker hintText="12hr Format" format="24hr" type="time"
                                 placeholder="Report Time"
-                                name="time"/>
+                                name="time"
+                                value={this.state.timeZone}
+                                onChange={this.handleTimeZone} />
                     <div>This is required.</div>
                   </div>
                 </div>
@@ -90,8 +123,10 @@ class GeneralSettings extends React.Component {
                 <div className="form-control focusable-icon">
                   <Today />
                   <div className="form-control-main date-wrapper">
-                    <DatePicker hintText="Landscape Inline Dialog" container="inline" mode="landscape"
-                                formControlName="from" required placeholder="From" name="from"/>
+                    <DatePicker hintText="Landscape Inline Dialog" mode="landscape"
+                                formControlName="from" name="from"
+                                value={this.state.from}
+                                onChange={this.handleDate}/>
                     <div>This is required.</div>
                   </div>
                 </div>
@@ -115,7 +150,7 @@ class GeneralSettings extends React.Component {
               </div>
               <div className="buttons">
                 <RaisedButton label="Cancel"/>
-                <RaisedButton label="Submit" primary={true} onClick={this.props.onSubmit} />
+                <RaisedButton label="Submit" primary={true} onClick={this.submitHandle.bind(this)} />
               </div>
             </form>
           </div>

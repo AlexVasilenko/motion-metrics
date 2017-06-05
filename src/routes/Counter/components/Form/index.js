@@ -17,14 +17,15 @@ class Form extends React.Component {
     this.state = {
       step: 1,
 
-      element: {
+      generalSetting: {
         enabled: false,
         title: '',
         monitoringReport: '',
         timeZone: '',
         from: '',
         recipient: '',
-
+      },
+      confirm: {
         equipment: '',
         unit: '',
         configuration: {
@@ -39,14 +40,19 @@ class Form extends React.Component {
     this.nextStep = this.nextStep.bind(this)
   }
 
-  nextStep() {
+  nextStep(data, formName) {
     const { step } = this.state;
     if (step !== 2) {
       this.setState({
-        step: this.state.step + 1
+        step: this.state.step + 1,
+        [formName]: data,
       })
     } else {
-      this.props.saveItem(this.state.element);
+      const newElement = {
+          ...this.state.generalSetting,
+          ...this.state.confirm
+      }
+      this.props.saveItem(newElement);
     }
   }
 
