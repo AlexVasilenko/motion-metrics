@@ -8,6 +8,7 @@ import TimePicker from 'material-ui/TimePicker'
 import RaisedButton from 'material-ui/RaisedButton'
 import Toggle from 'material-ui/Toggle'
 import TextField from 'material-ui/TextField'
+import Stepper from './../Stepper'
 /* icons */
 import Assignment from 'material-ui/svg-icons/action/assignment'
 import Place from 'material-ui/svg-icons/maps/place'
@@ -64,7 +65,7 @@ class GeneralSettings extends React.Component {
         <div className='container'>
           <div className="step">
             <form className="general" action="#" noValidate>
-              <h1>General Setting</h1>
+              <Stepper step={0} />
               <Slider className="enable-toggle" formControlName="enabled" name="enabled">
               </Slider>
               <span>
