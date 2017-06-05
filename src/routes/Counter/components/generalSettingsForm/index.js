@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Toggle from 'material-ui/Toggle'
 import TextField from 'material-ui/TextField'
 import Stepper from './../Stepper'
+import SelectFields from './../SelectFields'
 /* icons */
 import Assignment from 'material-ui/svg-icons/action/assignment'
 import Place from 'material-ui/svg-icons/maps/place'
@@ -16,6 +17,18 @@ import AccessTime from 'material-ui/svg-icons/device/access-time'
 import Today from 'material-ui/svg-icons/action/today'
 import Repeat from 'material-ui/svg-icons/av/repeat'
 import People from 'material-ui/svg-icons/social/people'
+
+const itemsForSelectFields = [
+    {name: 'Monday', value: 'Mon'},
+    {name: 'Tuesday', value: 'Tue'},
+    {name: 'Wednesday', value: 'Wed'},
+    {name: 'Thursday', value: 'Thur'},
+    {name: 'Friday', value: 'Fri'},
+    {name: 'Saturday', value: 'Sat'},
+    {name: 'Sunday', value: 'Sun'},
+]
+
+const defaultRepeatValue = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
 
 
 class GeneralSettings extends React.Component {
@@ -30,6 +43,7 @@ class GeneralSettings extends React.Component {
       enabled: false,
       title: '',
       monitoringReport: '',
+      repeat: defaultRepeatValue,
       timeZone: '',
       from: '',
       recipient: '',
@@ -41,11 +55,47 @@ class GeneralSettings extends React.Component {
     this.handleDate = (event, value) => this.setState({ from: value })
   }
 
+  repeatChange(value, index) {
+    // refactor this method
+    return () => {
+      const arrayIndex = this.state.repeat.findIndex((item) => item === value)
+      const currentArray = this.state.repeat
+      if (arrayIndex + 1) {
+        currentArray.splice(arrayIndex, 1)
+      } else {
+          currentArray.splice(index - 1, 0, value)
+      }
+
+      this.setState({
+        repeat: this.state.repeat
+      })
+    }
+  }
+
   onSubmit() {
     return () => {
       this.setState({
         enabled: !this.state.enabled,
       })
+    }
+  }
+
+  validate(values) {
+    const roles = {
+      title: {
+        required: {
+          fn: (value) => !!value,
+          text: 'This is required'
+        }
+      }
+    }
+
+    const errors = {
+
+    }
+
+    for (let value of values) {
+
     }
   }
 
@@ -133,16 +183,7 @@ class GeneralSettings extends React.Component {
                 </div>
                 <div className="form-control select-wrapper focusable-icon">
                   <Repeat />
-                  <SelectField placeholder="Repeat" formControlName="repeat" name="type"
-                               required multiple align="end">
-                    <MenuItem value={1} align="end" primaryText="Monday"/>
-                    <MenuItem value={2} primaryText="Tuesday"/>
-                    <MenuItem value={3} primaryText="Wednesday"/>
-                    <MenuItem value={4} primaryText="Thursday"/>
-                    <MenuItem value={5} primaryText="Friday"/>
-                    <MenuItem value={6} primaryText="Saturday"/>
-                    <MenuItem value={7} primaryText="Sunday"/>
-                  </SelectField>
+                  <SelectFields onChange={this.repeatChange.bind(this)} text={this.state.repeat.join(',')} fields={itemsForSelectFields} />
                 </div>
               </div>
               <div className="form-control tags-wrapper focusable-icon">
@@ -151,7 +192,7 @@ class GeneralSettings extends React.Component {
               </div>
               <div className="buttons">
                 <RaisedButton label="Cancel"/>
-                <RaisedButton label="Submit" primary={true} onClick={this.submitHandle.bind(this)} />
+                <RaisedButton label="Submit" primary={true} onClick={this.submit} />
               </div>
             </form>
           </div>
