@@ -14,6 +14,7 @@ class HomeView extends React.Component {
 
   constructor (props) {
     super()
+    props.getTimeZone()
   }
 
   render () {

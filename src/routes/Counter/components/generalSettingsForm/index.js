@@ -10,6 +10,7 @@ import Toggle from 'material-ui/Toggle'
 import TextField from 'material-ui/TextField'
 import Stepper from './../Stepper'
 import SelectFields from './../SelectFields'
+import AutoComplete from 'material-ui/AutoComplete'
 import 'babel-polyfill'
 /* icons */
 import Assignment from 'material-ui/svg-icons/action/assignment'
@@ -46,7 +47,7 @@ class GeneralSettings extends React.Component {
       title: '',
       monitoringReport: '',
       repeat: defaultRepeatValue,
-      timeZone: '',
+      timeZone: [],
       from: '',
       recipient: '',
       errors: {}
@@ -110,6 +111,10 @@ class GeneralSettings extends React.Component {
       return errors
     }
     return false
+  }
+
+  timeZoneFilter() {
+    debugger
   }
 
   submitHandle () {
@@ -177,7 +182,11 @@ class GeneralSettings extends React.Component {
               <div className='form-control focusable-icon'>
                 <div className='form-control-main'>
                   <Place />
-                  <input placeholder='Time Zone' required formControlName='timeZone'/>
+                  <AutoComplete
+                    hintText='text-value data'
+                    filter={this.timeZoneFilter}
+                    dataSource={this.state.timeZone}
+                  /><br />
                   <div>This is required.</div>
                 </div>
               </div>

@@ -1,5 +1,7 @@
 import getAllList from '../../../api/index'
 
+import { getTimeZoneByName } from '../../../api/index'
+
 export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
 export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
 export const DOWNLOAD_ITEMS_ERROR = 'DOWNLOAD LIST ELEMENTS ERROR'
@@ -10,9 +12,24 @@ export const SELECT_ITEMS = 'SELECT ITEM'
 import newItem from '../../../routes/Home/modules/items'
 
 
+const getTimeZone = () => {
+  return (dispatch, getState) => {
+    return getTimeZoneByName('a').then((resolve) => {
+      debugger
+      setTimeout(() => {
+        dispatch({
+          type    : DOWNLOADED_ITEMS,
+          payload : getAllList()
+        })
+        resolve()
+      }, 200)
+    })
+  }
+}
 
 export const actions = {
-  newItem
+  newItem,
+  getTimeZone
 }
 
 // ------------------------------------
