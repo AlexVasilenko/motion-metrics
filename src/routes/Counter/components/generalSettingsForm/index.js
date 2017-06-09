@@ -30,6 +30,12 @@ const itemsForSelectFields = [
     { name: 'Sunday', value: 'Sun' },
 ]
 
+const recipients = [
+  { name: 'foo', value: 'foo' },
+  { name: 'bar', value: 'bar' },
+  { name: 'baz', value: 'baz' }
+]
+
 const defaultRepeatValue = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
 
 
@@ -49,14 +55,15 @@ class GeneralSettings extends React.Component {
       title: '',
       monitoringReport: '',
       repeat: defaultRepeatValue,
-      timeZone: '',
-      from: '',
+      timeZone: {},
+      from: {},
       recipient: '',
       errors: {},
     }
     this.onChange = this.onSubmit()
     this.submit = this.submitHandle()
     this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
+    this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
     this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
     this.handleDate = (event, value) => this.setState({ from: value })
   }
@@ -92,7 +99,7 @@ class GeneralSettings extends React.Component {
       required: {
         fn: (value) => !!value.length,
         text: 'This is required',
-        fields: ['title', 'monitoringReport', 'timeZone', 'from']
+        fields: ['title', 'monitoringReport', 'repeat', 'timeZone', 'from', 'recipient']
       }
     }
 
@@ -150,7 +157,7 @@ class GeneralSettings extends React.Component {
         <div className='step'>
           <form className='general' action='#' noValidate>
             <Stepper step={0} />
-            <Slider className='enable-toggle' formControlName='enabled' name='enabled' />
+            <Slider className='enable-toggle' name='enabled' />
             <span>
               <div>
                 <Toggle
@@ -171,7 +178,6 @@ class GeneralSettings extends React.Component {
                 <Assignment />
                 <SelectField
                   placeholder='Task Type'
-                  formControlName='type'
                   errorText={this.state.errors.monitoringReport}
                   name='type'
                   value={this.state.monitoringReport}
@@ -218,7 +224,6 @@ class GeneralSettings extends React.Component {
                   <DatePicker
                     hintText='Landscape Inline Dialog'
                     mode='landscape'
-                    formControlName='from'
                     name='from'
                     value={this.state.from}
                     onChange={this.handleDate} />
@@ -235,11 +240,21 @@ class GeneralSettings extends React.Component {
             </div>
             <div className='form-control tags-wrapper focusable-icon'>
               <People />
-              <input placeholder='recipient' />
+              <SelectField
+                placeholder='Recipient'
+                errorText={this.state.errors.recipient}
+                name='type'
+                value={this.state.recipient}
+                onChange={this.handleRecipient} >
+                <MenuItem value={1} primaryText='foo' />
+                <MenuItem value={2} primaryText='bar' />
+                <MenuItem value={3} primaryText='baz' />
+              </SelectField>
+
             </div>
             <div className='buttons'>
               <RaisedButton label='Cancel' />
-              <RaisedButton label='Submit' primary={true} onClick={this.submit} />
+              <RaisedButton label='Submit' primary onClick={this.submit} />
             </div>
           </form>
         </div>

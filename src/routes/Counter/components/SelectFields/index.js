@@ -5,20 +5,20 @@ import MenuItem from 'material-ui/MenuItem'
 import Checkbox from 'material-ui/Checkbox'
 
 const generateMenuItem = (item, index, onChange, text) => (
-    <MenuItem value={index}>
-        <Checkbox
-            label={item.name}
-            labelPosition="left"
-            onCheck={onChange(item.value, index)}
-            checked={text.indexOf(item.value) !== -1}
-        />
-    </MenuItem>
+  <MenuItem value={index} key={index}>
+    <Checkbox
+      label={item.name}
+      labelPosition='left'
+      onCheck={onChange(item.value, index)}
+      checked={text.indexOf(item.value) !== -1}
+    />
+  </MenuItem>
 )
 
 const SelectFields = ({ onChange, fields, text }) => (
-        <SelectField placeholder="Repeat" align="end" multiple={true} hintText={text}>
-            {fields.map((item, index) => generateMenuItem(item, index + 1, onChange, text))}
-        </SelectField>
+  <SelectField placeholder='Repeat' multiple hintText={text}>
+    { fields.map((item, index) => generateMenuItem(item, index + 1, onChange, text)) }
+  </SelectField>
     )
 
 SelectFields.propTypes = {
