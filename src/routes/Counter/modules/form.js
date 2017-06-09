@@ -7,22 +7,21 @@ export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
 export const DOWNLOAD_ITEMS_ERROR = 'DOWNLOAD LIST ELEMENTS ERROR'
 export const UNSELECT_ALL_ITEMS = 'UNSELECT ALL ITEMS IN THE LIST'
 
-export const SELECT_ITEMS = 'SELECT ITEM'
+export const DOWNLOADED_TIMEZONES = 'DOWNLOADED TIMEZONES'
 
 import newItem from '../../../routes/Home/modules/items'
 
 
-const getTimeZone = () => {
+const getTimeZone = (name) => {
   return (dispatch, getState) => {
-    return getTimeZoneByName('a').then((resolve) => {
-      debugger
-      setTimeout(() => {
+    return new Promise((resolve, reject) => {
+      getTimeZoneByName(name).then((timeZones) => {
         dispatch({
-          type    : DOWNLOADED_ITEMS,
-          payload : getAllList()
+          type    : DOWNLOADED_TIMEZONES,
+          payload : timeZones
         })
         resolve()
-      }, 200)
+      })
     })
   }
 }
@@ -36,7 +35,13 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-
+  [DOWNLOADED_TIMEZONES]: (state, action) => ({
+    ...state,
+    form: {
+      ...state.form,
+      timeZones: action.payload
+    }
+  })
 }
 
 // ------------------------------------
@@ -48,6 +53,7 @@ const initialState = {
   form: {
     step: 1,
     enabled: false,
+    timeZones: [],
   }
 }
 export default function formReducer (state = initialState, action) {

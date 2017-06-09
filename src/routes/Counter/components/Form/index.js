@@ -61,9 +61,9 @@ class Form extends React.Component {
   }
 
   render() {
-    const {isEditMode, user, form, step} = this.props;
+    const {isEditMode, user, form, step, getTimeZone} = this.props;
     if (step === 1) {
-      return <GeneralSettings form={form} onSubmit={this.nextStep} />
+      return <GeneralSettings form={form} onSubmit={this.nextStep} getTimeZone={getTimeZone} />
     } else if (step === 2) {
       return <Configuration onSubmit={this.nextStep} />
     }

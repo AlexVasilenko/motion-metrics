@@ -38,6 +38,8 @@ class GeneralSettings extends React.Component {
     user: PropTypes.object,
     isEditMode: PropTypes.bool,
     saveItem: PropTypes.func,
+    form: PropTypes.object,
+    getTimeZone: PropTypes.func,
   }
 
   constructor () {
@@ -47,10 +49,10 @@ class GeneralSettings extends React.Component {
       title: '',
       monitoringReport: '',
       repeat: defaultRepeatValue,
-      timeZone: [],
+      timeZone: '',
       from: '',
       recipient: '',
-      errors: {}
+      errors: {},
     }
     this.onChange = this.onSubmit()
     this.submit = this.submitHandle()
@@ -113,8 +115,10 @@ class GeneralSettings extends React.Component {
     return false
   }
 
-  timeZoneFilter() {
-    debugger
+  timeZoneFilter () {
+    return (value, value1, value2) => {
+      this.props.getTimeZone(value)
+    }
   }
 
   submitHandle () {
@@ -182,10 +186,12 @@ class GeneralSettings extends React.Component {
               <div className='form-control focusable-icon'>
                 <div className='form-control-main'>
                   <Place />
+                  <div>{this.state.timeZone.length}</div>
                   <AutoComplete
-                    hintText='text-value data'
-                    filter={this.timeZoneFilter}
-                    dataSource={this.state.timeZone}
+                    hintText='Type text'
+                    dataSource={this.props.form.timeZones}
+                    onUpdateInput={this.timeZoneFilter()}
+                    filter={(searchText, key) => true}
                   /><br />
                   <div>This is required.</div>
                 </div>

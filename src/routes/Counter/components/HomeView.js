@@ -14,7 +14,6 @@ class HomeView extends React.Component {
 
   constructor (props) {
     super()
-    props.getTimeZone()
   }
 
   render () {
@@ -27,7 +26,8 @@ class HomeView extends React.Component {
           user={this.props.user}
           form={this.props.form}
           step={this.props.form.step}
-          saveItem={this.props.newItem} />
+          saveItem={this.props.newItem}
+          getTimeZone={this.props.getTimeZone} />
     </div>)
   }
 }

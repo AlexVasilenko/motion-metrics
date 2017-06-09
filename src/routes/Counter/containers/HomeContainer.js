@@ -18,9 +18,10 @@ const mapDispatchToProps = actions
 
 const mapStateToProps = (state) => {
   return {
-      form: state.form.form,
-      user: state.form.user,
-      isEditMode: state.form.isEditMode
+    form: state.form.form,
+    user: state.form.user,
+    isEditMode: state.form.isEditMode,
+    timeZones: state.form.timeZones
   }
 }
 
