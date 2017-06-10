@@ -104,7 +104,7 @@ class GeneralSettings extends React.Component {
   }
 
   timeZoneFilter () {
-    return (value, value1, value2) => {
+    return (value) => {
       this.props.getTimeZone(value)
     }
   }
