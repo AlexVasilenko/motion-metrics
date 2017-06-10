@@ -13,6 +13,13 @@ import SelectFields from './../SelectFields'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import 'babel-polyfill'
+
+import {
+  itemsForSelectFields,
+  recipients,
+  defaultRepeatValue,
+  roles,
+} from './config'
 /* icons */
 import Assignment from 'material-ui/svg-icons/action/assignment'
 import Place from 'material-ui/svg-icons/maps/place'
@@ -20,25 +27,6 @@ import AccessTime from 'material-ui/svg-icons/device/access-time'
 import Today from 'material-ui/svg-icons/action/today'
 import Repeat from 'material-ui/svg-icons/av/repeat'
 import People from 'material-ui/svg-icons/social/people'
-
-const itemsForSelectFields = [
-    { name: 'Monday', value: 'Mon' },
-    { name: 'Tuesday', value: 'Tue' },
-    { name: 'Wednesday', value: 'Wed' },
-    { name: 'Thursday', value: 'Thur' },
-    { name: 'Friday', value: 'Fri' },
-    { name: 'Saturday', value: 'Sat' },
-    { name: 'Sunday', value: 'Sun' },
-]
-
-const recipients = [
-  { name: 'foo', value: 'foo' },
-  { name: 'bar', value: 'bar' },
-  { name: 'baz', value: 'baz' }
-]
-
-const defaultRepeatValue = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
-
 
 class GeneralSettings extends React.Component {
   PropTypes = {
@@ -56,24 +44,20 @@ class GeneralSettings extends React.Component {
       title: '',
       monitoringReport: '',
       repeat: defaultRepeatValue,
-      timeZone: {},
-      from: {},
+      timeZone: '',
+      from: '',
       recipient: '',
       errors: {},
     }
     this.onChange = this.onSubmit()
     this.submit = this.submitHandle()
-    this.handleMonitoringReport = (event, index, value) => {
-      debugger
-      this.setState({ monitoringReport: value })
-    }
+    this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
     this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
     this.handleDate = (event, value) => this.setState({ from: value })
   }
 
   repeatChange (value, index) {
-    // refactor this method
     return () => {
       const arrayIndex = this.state.repeat.findIndex((item) => item === value)
       const currentArray = this.state.repeat
@@ -98,19 +82,8 @@ class GeneralSettings extends React.Component {
   }
 
   validate (values) {
+    // move to validator file
     let findError = false
-    const roles = {
-      required: {
-        fn: (value) => !!value.length,
-        text: 'This is required',
-        fields: ['title', 'monitoringReport', 'repeat']
-      },
-      dataRequired: {
-        fn: (value) => !!value,
-        text: 'This is required',
-        fields: ['timeZone', 'from']
-      }
-    }
 
     const errors = {}
 
@@ -124,7 +97,6 @@ class GeneralSettings extends React.Component {
         }
       }
     }
-
     if (findError) {
       return errors
     }
@@ -156,7 +128,6 @@ class GeneralSettings extends React.Component {
           enabled: this.state.enabled,
           ...validateValues,
         }
-        debugger
         this.props.onSubmit('generalSetting', values)
       }
     }
@@ -260,9 +231,14 @@ class GeneralSettings extends React.Component {
                 name='type'
                 value={this.state.recipient}
                 onChange={this.handleRecipient} >
-                <MenuItem value={1} primaryText='foo' />
-                <MenuItem value={2} primaryText='bar' />
-                <MenuItem value={3} primaryText='baz' />
+                {
+                  recipients.map((recipient, index) => (
+                    <MenuItem
+                      key={index}
+                      value={recipient.name}
+                      primaryText={recipient.value}
+                    />))
+                }
               </SelectField>
 
             </div>
