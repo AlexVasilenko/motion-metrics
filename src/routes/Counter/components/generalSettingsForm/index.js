@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField'
 import Stepper from './../Stepper'
 import SelectFields from './../SelectFields'
 import AutoComplete from 'material-ui/AutoComplete'
+import Chip from 'material-ui/Chip'
 import 'babel-polyfill'
 /* icons */
 import Assignment from 'material-ui/svg-icons/action/assignment'
@@ -62,7 +63,10 @@ class GeneralSettings extends React.Component {
     }
     this.onChange = this.onSubmit()
     this.submit = this.submitHandle()
-    this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
+    this.handleMonitoringReport = (event, index, value) => {
+      debugger
+      this.setState({ monitoringReport: value })
+    }
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
     this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
     this.handleDate = (event, value) => this.setState({ from: value })
@@ -99,7 +103,12 @@ class GeneralSettings extends React.Component {
       required: {
         fn: (value) => !!value.length,
         text: 'This is required',
-        fields: ['title', 'monitoringReport', 'repeat', 'timeZone', 'from', 'recipient']
+        fields: ['title', 'monitoringReport', 'repeat']
+      },
+      dataRequired: {
+        fn: (value) => !!value,
+        text: 'This is required',
+        fields: ['timeZone', 'from']
       }
     }
 
@@ -135,6 +144,7 @@ class GeneralSettings extends React.Component {
         monitoringReport: this.state.monitoringReport,
         timeZone: this.state.timeZone,
         from: this.state.from,
+        repeat: this.state.repeat,
       }
       const errors = this.validate(validateValues)
       if (errors) {
@@ -143,9 +153,11 @@ class GeneralSettings extends React.Component {
         })
       } else {
         const values = {
+          enabled: this.state.enabled,
           ...validateValues,
         }
-        this.props.saveItem('generalSetting', values)
+        debugger
+        this.props.onSubmit('generalSetting', values)
       }
     }
   }
@@ -182,9 +194,9 @@ class GeneralSettings extends React.Component {
                   name='type'
                   value={this.state.monitoringReport}
                   onChange={this.handleMonitoringReport} >
-                  <MenuItem value={1} primaryText='Payload Monitoring Report' />
-                  <MenuItem value={2} primaryText='Fragmentation Monitoring Report' />
-                  <MenuItem value={3} primaryText='Tooth Detection Report' />
+                  <MenuItem value={'Payload Monitoring Report'} primaryText='Payload Monitoring Report' />
+                  <MenuItem value={'Fragmentation Monitoring Report'} primaryText='Fragmentation Monitoring Report' />
+                  <MenuItem value={'Tooth Detection Report'} primaryText='Tooth Detection Report' />
                 </SelectField>
               </div>
             </div>
@@ -235,7 +247,9 @@ class GeneralSettings extends React.Component {
                 <SelectFields
                   onChange={this.repeatChange.bind(this)}
                   text={this.state.repeat.join(',')}
+                  errorText={this.state.errors.repeat}
                   fields={itemsForSelectFields} />
+                  <div>{ this.state.errors.repeat }</div>
               </div>
             </div>
             <div className='form-control tags-wrapper focusable-icon'>

@@ -22,12 +22,12 @@ class HomeView extends React.Component {
       <Nav selectMode={this.props.selectedItems} />
       <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
       <Form
-          isEditMode={this.props.isEditMode}
-          user={this.props.user}
-          form={this.props.form}
-          step={this.props.form.step}
-          saveItem={this.props.newItem}
-          getTimeZone={this.props.getTimeZone} />
+        isEditMode={this.props.isEditMode}
+        user={this.props.user}
+        form={this.props.form}
+        step={this.props.form.step}
+        saveItem={this.props.newItem}
+        getTimeZone={this.props.getTimeZone} />
     </div>)
   }
 }

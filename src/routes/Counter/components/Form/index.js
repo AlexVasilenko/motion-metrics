@@ -40,7 +40,8 @@ class Form extends React.Component {
     this.nextStep = this.nextStep.bind(this)
   }
 
-  nextStep(data, formName) {
+  nextStep(formName, data) {
+    debugger
     const { step } = this.state;
     if (step !== 2) {
       this.setState({
@@ -48,6 +49,7 @@ class Form extends React.Component {
         [formName]: data,
       })
     } else {
+      debugger
       const newElement = {
           ...this.state.generalSetting,
           ...this.state.confirm
@@ -61,10 +63,11 @@ class Form extends React.Component {
   }
 
   render() {
+    debugger
     const {isEditMode, user, form, step, getTimeZone} = this.props;
-    if (step === 1) {
+    if (this.state.step === 1) {
       return <GeneralSettings form={form} onSubmit={this.nextStep} getTimeZone={getTimeZone} />
-    } else if (step === 2) {
+    } else if (this.state.step === 2) {
       return <Configuration onSubmit={this.nextStep} />
     }
   }
