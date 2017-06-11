@@ -19,6 +19,7 @@ import {
   recipients,
   defaultRepeatValue,
   roles,
+  monitoringReport,
 } from './config'
 /* icons */
 import Assignment from 'material-ui/svg-icons/action/assignment'
@@ -49,7 +50,7 @@ class GeneralSettings extends React.Component {
       recipient: '',
       errors: {},
     }
-    this.onChange = this.onSubmit()
+    this.onChange = () => this.setState({ enabled: !this.state.enabled })
     this.submit = this.submitHandle()
     this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
@@ -69,14 +70,6 @@ class GeneralSettings extends React.Component {
 
       this.setState({
         repeat: this.state.repeat
-      })
-    }
-  }
-
-  onSubmit () {
-    return () => {
-      this.setState({
-        enabled: !this.state.enabled,
       })
     }
   }
@@ -165,9 +158,12 @@ class GeneralSettings extends React.Component {
                   name='type'
                   value={this.state.monitoringReport}
                   onChange={this.handleMonitoringReport} >
-                  <MenuItem value={'Payload Monitoring Report'} primaryText='Payload Monitoring Report' />
-                  <MenuItem value={'Fragmentation Monitoring Report'} primaryText='Fragmentation Monitoring Report' />
-                  <MenuItem value={'Tooth Detection Report'} primaryText='Tooth Detection Report' />
+                  {
+                    monitoringReport.map(report => (<MenuItem
+                      value={report}
+                      primaryText={report}
+                     />))
+                  }
                 </SelectField>
               </div>
             </div>
@@ -220,7 +216,7 @@ class GeneralSettings extends React.Component {
                   text={this.state.repeat.join(',')}
                   errorText={this.state.errors.repeat}
                   fields={itemsForSelectFields} />
-                  <div>{ this.state.errors.repeat }</div>
+                <div>{ this.state.errors.repeat }</div>
               </div>
             </div>
             <div className='form-control tags-wrapper focusable-icon'>
@@ -240,7 +236,6 @@ class GeneralSettings extends React.Component {
                     />))
                 }
               </SelectField>
-
             </div>
             <div className='buttons'>
               <RaisedButton label='Cancel' />

@@ -28,3 +28,9 @@ export const roles = {
     fields: ['timeZone', 'from']
   }
 }
+
+export const monitoringReport = [
+  'Payload Monitoring Report',
+  'Fragmentation Monitoring Report',
+  'Tooth Detection Report'
+]

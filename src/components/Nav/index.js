@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+/* icons */
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
@@ -15,30 +16,30 @@ import './styles.scss'
 
 
 export const Nav = ({ selectMode, user }) => {
-    const selectClass = classNames({
-        nav: true,
-        'edit-mode': selectMode,
-    });
-    return (
-        <nav className={selectClass} >
-            <div className='logo'>Logo</div>
-            <span className='title'>Admin</span>
-            <span className='username'>{ user }&nbsp;{ user }</span>
-            <div className='initials'>{ user }{ user }</div>
+  const selectClass = classNames({
+    nav: true,
+    'edit-mode': selectMode,
+  })
+  return (
+    <nav className={selectClass} >
+      <div className='logo'>Logo</div>
+      <span className='title'>Admin</span>
+      <span className='username'>{ user }&nbsp;{ user }</span>
+      <div className='initials'>{ user }{ user }</div>
 
-            <IconMenu
-                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
-                <MenuItem primaryText='Account Info' leftIcon={<AccountCircle />} />
-                <MenuItem primaryText='Settings' leftIcon={<Settings />} />
-                <MenuItem primaryText='Feedback' leftIcon={<Feedback />} />
-                <MenuItem primaryText='Administration' leftIcon={<VerifiedUser />} />
-                <MenuItem primaryText='Sign out' leftIcon={<ExitToApp />} />
-            </IconMenu>
-        </nav>
-    )
+      <IconMenu
+        iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <MenuItem primaryText='Account Info' leftIcon={<AccountCircle />} />
+        <MenuItem primaryText='Settings' leftIcon={<Settings />} />
+        <MenuItem primaryText='Feedback' leftIcon={<Feedback />} />
+        <MenuItem primaryText='Administration' leftIcon={<VerifiedUser />} />
+        <MenuItem primaryText='Sign out' leftIcon={<ExitToApp />} />
+      </IconMenu>
+    </nav>
+  )
 }
 Nav.propTypes = {
   user: PropTypes.object,
