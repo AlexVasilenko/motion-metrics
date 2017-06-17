@@ -59,15 +59,14 @@ class Form extends React.Component {
   }
 
   handleChange(field) {
-    return (evt) => this.setState({ [field]: evt.target.value });
+    return (evt) => this.setState({ [field]: evt.target.value })
   }
 
   render() {
-    debugger
-    const {isEditMode, user, form, step, getTimeZone} = this.props;
-    if (this.state.step === 1) {
+    const {isEditMode, user, form, step, getTimeZone} = this.props
+    if (this.state.step === 2) {
       return <GeneralSettings form={form} onSubmit={this.nextStep} getTimeZone={getTimeZone} />
-    } else if (this.state.step === 2) {
+    } else if (this.state.step === 1) {
       return <Configuration onSubmit={this.nextStep} />
     }
   }

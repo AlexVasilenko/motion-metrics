@@ -10,7 +10,13 @@ let selected = []
 
 class HomeView extends React.Component {
   static propTypes = {
-
+    selectedItems: PropTypes.func,
+    user: PropTypes.object,
+    unSelect: PropTypes.func,
+    isEditMode: PropTypes.bool,
+    form: PropTypes.object,
+    newItem: PropTypes.func,
+    getTimeZone: PropTypes.func,
   }
 
   constructor (props) {
