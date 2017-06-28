@@ -134,7 +134,6 @@ class GeneralSettings extends React.Component {
           },
 
         }).then((result) => {
-          debugger
           if (result.valid) {
             this.props.onSubmit('generalSetting', values)
           } else {
