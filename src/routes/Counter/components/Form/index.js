@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import GeneralSettings from './../generalSettingsForm'
 import Configuration from './../configuration'
+import { browserHistory } from 'react-router'
 
 import './form.scss'
 
@@ -12,7 +13,7 @@ class Form extends React.Component {
     isEditMode: PropTypes.bool,
   }
 
-  constructor() {
+  constructor () {
     super()
     this.state = {
       step: 1,
@@ -41,7 +42,6 @@ class Form extends React.Component {
   }
 
   nextStep(formName, data) {
-    debugger
     const { step } = this.state;
     if (step !== 2) {
       this.setState({
@@ -49,12 +49,14 @@ class Form extends React.Component {
         [formName]: data,
       })
     } else {
-      debugger
       const newElement = {
+          id: Math.random(),
           ...this.state.generalSetting,
-          ...this.state.confirm
+          ...data
       }
-      this.props.saveItem(newElement);
+      this.props.saveItem(newElement).then(() => {
+        browserHistory.push('/')
+      })
     }
   }
 
@@ -63,10 +65,14 @@ class Form extends React.Component {
   }
 
   render() {
-    const {isEditMode, user, form, step, getTimeZone} = this.props
-    if (this.state.step === 2) {
-      return <GeneralSettings form={form} onSubmit={this.nextStep} getTimeZone={getTimeZone} />
-    } else if (this.state.step === 1) {
+    const {isEditMode, user, form, step, getTimeZone, uniqueName} = this.props
+    if (this.state.step === 1) {
+      return <GeneralSettings
+        form={form}
+        onSubmit={this.nextStep}
+        getTimeZone={getTimeZone}
+        uniqueName={uniqueName} />
+    } else if (this.state.step === 2) {
       return <Configuration onSubmit={this.nextStep} />
     }
   }

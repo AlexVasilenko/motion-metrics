@@ -20,6 +20,7 @@ const DesktopList = ({ tasks,  onSelect}) => (
               item: true,
               selected: task.select
           });
+          debugger
         return (
           <ListItem className={selectClass} onClick={onSelect.bind(this, task.id)} key={i}>
             <div className='item-wrapper '>

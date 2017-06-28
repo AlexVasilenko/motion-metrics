@@ -5,6 +5,7 @@ export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
 export const DOWNLOAD_ITEMS_ERROR = 'DOWNLOAD LIST ELEMENTS ERROR'
 export const UNSELECT_ALL_ITEMS = 'UNSELECT ALL ITEMS IN THE LIST'
 export const ADD_NEW_ITEM = 'ADD NEW ITEM'
+const NAME_VALIDATE = 'FINISH NAME VALIDATE'
 
 export const SELECT_ITEMS = 'SELECT ITEM'
 
@@ -49,11 +50,23 @@ export const newItem = (element) => {
   }
 }
 
+export const uniqueName = (name) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const items = getState().items
+        const isValid = !!items.filter(item => item.name !== name)
+        resolve(isValid)
+      }, 200)
+    })
+  }
+}
+
 export const actions = {
   downloadItems,
   onSelect,
   unSelect,
-  newItem
+  newItem,
 }
 
 // ------------------------------------
@@ -87,12 +100,12 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_NEW_ITEM]       : (state, action) => {
-    state.items.push(action.payload);
+    state.items.push(action.payload)
 
     return {
         ...state
     }
-  }
+  },
 }
 
 // ------------------------------------

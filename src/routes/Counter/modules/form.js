@@ -9,7 +9,7 @@ export const UNSELECT_ALL_ITEMS = 'UNSELECT ALL ITEMS IN THE LIST'
 
 export const DOWNLOADED_TIMEZONES = 'DOWNLOADED TIMEZONES'
 
-import newItem from '../../../routes/Home/modules/items'
+import { newItem, uniqueName } from '../../../routes/Home/modules/items'
 
 
 const getTimeZone = (name) => {
@@ -28,7 +28,8 @@ const getTimeZone = (name) => {
 
 export const actions = {
   newItem,
-  getTimeZone
+  getTimeZone,
+  uniqueName
 }
 
 // ------------------------------------

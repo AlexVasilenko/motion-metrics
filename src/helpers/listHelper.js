@@ -1,5 +1,5 @@
 export const repeatGenerate = (repeat) => {
-    const joinRepeat = repeat.join(',');
+    const joinRepeat = repeat.join(',')
 
     // move to config
     const daysAndPartOfDays = {
@@ -12,11 +12,11 @@ export const repeatGenerate = (repeat) => {
         5: 'Fri',
         6: 'Sat',
         7: 'Sun'
-    };
+    }
 
     if (daysAndPartOfDays[joinRepeat]) {
         return daysAndPartOfDays[joinRepeat]
     }
 
-    return repeat.map(day => daysAndPartOfDays[day]).join(',');
+    return repeat.map(day => daysAndPartOfDays[day]).join(',')
 }

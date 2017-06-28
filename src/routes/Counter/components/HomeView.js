@@ -34,7 +34,8 @@ class HomeView extends React.Component {
         form={this.props.form}
         step={this.props.form.step}
         saveItem={this.props.newItem}
-        getTimeZone={this.props.getTimeZone} />
+        getTimeZone={this.props.getTimeZone}
+        uniqueName={this.props.uniqueName} />
     </div>)
   }
 }

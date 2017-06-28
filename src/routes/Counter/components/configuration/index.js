@@ -16,6 +16,21 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
 
 import './styles.scss'
 
+const allRefsForModals = {
+  productivity: ['productivity'],
+  timeUsage: ['timeUsageVal'],
+  passBucket: [
+    'passBucketNumber',
+    'showMoving',
+    'showShift'
+  ],
+  backetDistribution: ['separateShifts'],
+}
+
+const unitSettingsFields = ['m kg s', 'cm kg s', 'mm g s', 'in lb s']
+
+const reportComponents = ['productivity', 'timeUsage', 'Cycle Statistics', 'passBucket', 'backetDistribution']
+
 class Configuration extends React.Component {
   PropTypes = {
     user: PropTypes.object,
@@ -27,6 +42,12 @@ class Configuration extends React.Component {
     super()
     this.state = {
       unit: '',
+      values: {
+        productivity: {},
+        timeUsage: {},
+        passBucket: {},
+        backetDistribution: {},
+      },
       select: {
         productivity: false,
         timeUsage: false,
@@ -48,7 +69,7 @@ class Configuration extends React.Component {
       required: {
         fn: (value) => !!value.length,
         text: 'This is required',
-        fields: ['title', 'monitoringReport', 'repeat']
+        fields: ['equipment']
       },
     }
 
@@ -74,7 +95,7 @@ class Configuration extends React.Component {
   submitHandle () {
     return () => {
       const validateValues = {
-        unit: this.state.unit,
+        equipment: this.equipment.getValue(),
       }
       const errors = this.validate(validateValues)
       if (errors) {
@@ -85,6 +106,7 @@ class Configuration extends React.Component {
         const values = {
           enabled: this.state.enabled,
           ...validateValues,
+          ...this.state.values,
         }
         this.props.onSubmit('generalSetting', values)
       }
@@ -123,25 +145,72 @@ class Configuration extends React.Component {
     }
   }
 
-  actions = [
-    <FlatButton
-      label="Ok"
-      primary={true}
-      keyboardFocused={true}
-      onTouchTap={this.handleClose}
-    />,
-  ]
+  handleClose (name) {
+    return () => {
+      this.setState({
+        open: {
+          ...this.state.open,
+          [name]: false,
+        }
+      })
+    }
+  }
+
+  saveValue (name) {
+    return () => {
+      const values = {}
+      const fields = allRefsForModals[name]
+
+      for (let refName of fields) {
+        if (refName) {
+          values[refName] = this[refName].value
+        }
+      }
+      this.setState({
+        values: {
+          ...this.state.values,
+          [name]: values,
+        },
+        open: {
+          ...this.state.open,
+          [name]: false,
+        }
+      })
+    }
+  }
+
+  getActions (name) {
+    return [
+      <FlatButton
+        label='Cancel'
+        primary
+        onTouchTap={this.handleClose(name)}
+        />,
+      <FlatButton
+        label='Ok'
+        primary
+        keyboardFocused
+        onTouchTap={this.saveValue(name)}
+      />,
+    ]
+  }
 
   productivityPopup () {
     return (
       <Dialog
         title='Productivity'
-        actions={this.actions}
+        actions={this.getActions('productivity')}
         modal={false}
         open={this.state.open.productivity}
         onRequestClose={this.handleClose}
       >
-        <input type='number' min='0.1' max='99.999' step='0.001' />
+        <input
+          type='number'
+          min='0.1'
+          max='99.999'
+          step='0.001'
+          defaultValue={this.state.values.productivity.productivity}
+          ref={(productivity) => this.productivity = productivity} />
       </Dialog>
     )
   }
@@ -150,12 +219,18 @@ class Configuration extends React.Component {
     return (
       <Dialog
         title='Time Usage'
-        actions={this.actions}
+        actions={this.getActions('timeUsage')}
         modal={false}
         open={this.state.open.timeUsage}
         onRequestClose={this.handleClose}
       >
-        <input type='number' min='60' max='9999' step='1' />
+        <input
+          type='number'
+          min='60'
+          max='9999'
+          step='1'
+          defaultValue={this.state.values.timeUsage.timeUsageVal}
+          ref={(timeUsageVal) => { this.timeUsageVal = timeUsageVal }} />
       </Dialog>
     )
   }
@@ -164,17 +239,26 @@ class Configuration extends React.Component {
     return (
       <Dialog
         title='Time Usage'
-        actions={this.actions}
+        actions={this.getActions('passBucket')}
         modal={false}
         open={this.state.open.passBucket}
         onRequestClose={this.handleClose}
       >
-        <input type='number' min='0' max='100' step='1' />
+        <input
+          type='number'
+          min='0'
+          max='100'
+          step='1'
+          defaultValue={this.state.values.passBucket.passBucketNumber}
+          ref={(passBucketNumber) => this.passBucketNumber = passBucketNumber} />
+        <div>{this.state.values.passBucket.showMoving}</div>
         <Toggle
+          defaultToggled={this.state.values.passBucket.showMoving}
           label='Show Moving Average'
           ref={(showMoving) => this.showMoving = showMoving}
         />
         <Toggle
+          defaultToggled={this.state.values.passBucket.showShift}
           label='Show Shift Colors'
           ref={(showShift) => this.showShift = showShift}
         />
@@ -186,12 +270,13 @@ class Configuration extends React.Component {
     return (
       <Dialog
         title='Time Usage'
-        actions={this.actions}
+        actions={this.getActions('backetDistribution')}
         modal={false}
         open={this.state.open.backetDistribution}
         onRequestClose={this.handleClose}
       >
         <Toggle
+          defaultToggled={this.state.values.backetDistribution.separateShifts}
           label='Separate By Shifts'
           ref={(separateShifts) => this.separateShifts = separateShifts}
         />
@@ -199,61 +284,63 @@ class Configuration extends React.Component {
     )
   }
 
+  generateReports (name, key) {
+    if (name === 'Cycle Statistics') {
+      return (
+        <div className='form-control checkbox-wrapper' key={key}>
+          <Checkbox label={name} />
+        </div>
+      )
+    }
+    return (
+      <div className={this.generateClasses(name)} key={key}>
+        <Checkbox label={name} onCheck={this.onCheck(name)} />
+        <ArrowDropDown onClick={this.openModal(name)} />
+      </div>
+    )
+  }
+
   render () {
     return (
         <div className='container'>
-
+          { this.productivityPopup() }
+          { this.timeUsage() }
+          { this.passBucket() }
+          { this.backetDistribution() }
           <div className='step'>
-            <form className='general' action='#' noValidate>
+            <form className='general' noValidate>
               <h1>Configuration</h1>
               <div className='form-control focusable-icon'>
                 <Devices />
                 <TextField
-                hintText='Equipment'
-                name='equipment'
-                ref={(equipment) => this.equipment = equipment}
+                  hintText='Equipment'
+                  name='equipment'
+                  ref={(equipment) => this.equipment = equipment}
               /><br />
               </div>
               <div className='form-control focusable-icon'>
                 <div className='form-control-main select-wrapper'>
                   <LinearScale />
-                  <SelectField 
+                  <SelectField
                     placeholder='Unit System Setting'
                     name='type'
                   >
-                    <MenuItem value={'m kg s'} primaryText='m kg s' />
-                    <MenuItem value={'cm kg s'} primaryText='cm kg s' />
-                    <MenuItem value={'mm g s'} primaryText='mm g s' />
-                    <MenuItem value={'in lb s'} primaryText='in lb s' />
+                    {
+                      unitSettingsFields.map((name, key) => <MenuItem value={name} primaryText={name} key={key} />)
+                    }
                   </SelectField>
                   <div>This is required.</div>
                 </div>
               </div>
               <h2>Report Components</h2>
               <div className='configuration'>
-                <div className={this.generateClasses('productivity')}>
-                  <Checkbox label='Productivity' onCheck={this.onCheck('productivity')} />
-                  <ArrowDropDown onClick={this.openModal('productivity')} />
-                </div>
-                <div className={this.generateClasses('timeUsage')}>
-                  <Checkbox label='Time Usage' onCheck={this.onCheck('timeUsage')} />
-                  <ArrowDropDown onClick={this.openModal('timeUsage')} />
-                </div>
-                <div className='form-control checkbox-wrapper'>
-                  <Checkbox label='Cycle Statistics' />
-                </div>
-                <div className={this.generateClasses('passBucket')}>
-                  <Checkbox label='Pass/Bucket Payload' onCheck={this.onCheck('passBucket')} />
-                  <ArrowDropDown onClick={this.openModal('passBucket')} />
-                </div>
-                <div className={this.generateClasses('backetDistribution')}>
-                  <Checkbox label='Pass/Bucket Distribution' onCheck={this.onCheck('backetDistribution')} />
-                  <ArrowDropDown onClick={this.openModal('backetDistribution')} />
-                </div>
+                {
+                  reportComponents.map((name, key) => this.generateReports(name, key))
+                }
               </div>
               <div className='buttons'>
                 <RaisedButton label='Cancel' />
-                <RaisedButton label='Submit' primary={true} onClick={this.props.onSubmit} />
+                <RaisedButton label='Submit' primary onClick={this.submitHandle()} />
               </div>
             </form>
           </div>

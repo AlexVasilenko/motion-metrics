@@ -46,7 +46,7 @@ class GeneralSettings extends React.Component {
       monitoringReport: '',
       repeat: defaultRepeatValue,
       timeZone: '',
-      from: '',
+      reportTime: '',
       recipient: '',
       errors: {},
     }
@@ -55,7 +55,7 @@ class GeneralSettings extends React.Component {
     this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
     this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
-    this.handleDate = (event, value) => this.setState({ from: value })
+    this.handleDate = (event, value) => this.setState({ reportTime: value })
   }
 
   repeatChange (value, index) {
@@ -102,13 +102,17 @@ class GeneralSettings extends React.Component {
     }
   }
 
+  asyncValidation (data, validates) {
+
+  }
+
   submitHandle () {
     return () => {
       const validateValues = {
         title: this.title.getValue(),
         monitoringReport: this.state.monitoringReport,
-        timeZone: this.state.timeZone,
-        from: this.state.from,
+        timeZone: this.state.timeZone.toString(),
+        reportTime: this.state.reportTime,
         repeat: this.state.repeat,
       }
       const errors = this.validate(validateValues)
@@ -121,7 +125,24 @@ class GeneralSettings extends React.Component {
           enabled: this.state.enabled,
           ...validateValues,
         }
-        this.props.onSubmit('generalSetting', values)
+        this.asyncValidation(values, {
+          name: {
+            validFn: ({ title }) => {
+              return this.props.uniqueName(title);
+            },
+            errorName: 'Name must be unique',
+          },
+
+        }).then((result) => {
+          debugger
+          if (result.valid) {
+            this.props.onSubmit('generalSetting', values)
+          } else {
+            this.setState({
+              asyncErrors: result.errors,
+            })
+          }
+        })
       }
     }
   }
@@ -204,9 +225,9 @@ class GeneralSettings extends React.Component {
                     hintText='Landscape Inline Dialog'
                     mode='landscape'
                     name='from'
-                    value={this.state.from}
+                    value={this.state.reportTime}
                     onChange={this.handleDate} />
-                  <div>{this.state.errors.from}</div>
+                  <div>{this.state.errors.reportTime}</div>
                 </div>
               </div>
               <div className='form-control select-wrapper focusable-icon'>
