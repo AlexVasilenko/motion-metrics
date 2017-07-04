@@ -44,6 +44,7 @@ export const Nav = ({ selectMode, user }) => {
 Nav.propTypes = {
   user: PropTypes.object,
   isEditMode: PropTypes.bool,
+  selectMode: PropTypes.bool,
 }
 
 export default Nav

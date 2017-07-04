@@ -20,12 +20,11 @@ const selectFn = (state) => state.items.items.filter((item) => item.select).leng
 const selectedCount = createSelector(selectFn, (count) => count)
 
 const sortFunction = (state) => {
-
   state.items.items.sort((first, second) => {
-    if(first.title < second.title) return -1
-    if(first.title > second.title) return 1
+    if (first.title < second.title) return -1
+    if (first.title > second.title) return 1
     return 0
-  });
+  })
   return state.items
 }
 

@@ -13,6 +13,15 @@ import Toggle from 'material-ui/Toggle'
 import Devices from 'material-ui/svg-icons/device/devices'
 import LinearScale from 'material-ui/svg-icons/editor/linear-scale'
 import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
+import validator from '../../../../components/validator'
+import roles from './validationRoles'
+
+import {
+    productivityPopup,
+    timeUsage,
+    passBucket,
+    backetDistribution,
+} from './modals'
 
 import './styles.scss'
 
@@ -63,41 +72,12 @@ class Configuration extends React.Component {
     }
   }
 
-  validate (values) {
-    let findError = false
-    const roles = {
-      required: {
-        fn: (value) => !!value.length,
-        text: 'This is required',
-        fields: ['equipment']
-      },
-    }
-
-    const errors = {}
-
-    for (let value in values) {
-      for (let validate in roles) {
-        if (roles[validate].fields.indexOf(value) !== -1) {
-          if (!roles[validate].fn(values[value]) && !errors[value]) {
-            errors[value] = roles[validate].text
-            findError = true
-          }
-        }
-      }
-    }
-
-    if (findError) {
-      return errors
-    }
-    return false
-  }
-
   submitHandle () {
     return () => {
       const validateValues = {
         equipment: this.equipment.getValue(),
       }
-      const errors = this.validate(validateValues)
+      const errors = validator(validateValues, roles)
       if (errors) {
         this.setState({
           errors,
@@ -195,95 +175,6 @@ class Configuration extends React.Component {
     ]
   }
 
-  productivityPopup () {
-    return (
-      <Dialog
-        title='Productivity'
-        actions={this.getActions('productivity')}
-        modal={false}
-        open={this.state.open.productivity}
-        onRequestClose={this.handleClose}
-      >
-        <input
-          type='number'
-          min='0.1'
-          max='99.999'
-          step='0.001'
-          defaultValue={this.state.values.productivity.productivity}
-          ref={(productivity) => this.productivity = productivity} />
-      </Dialog>
-    )
-  }
-
-  timeUsage () {
-    return (
-      <Dialog
-        title='Time Usage'
-        actions={this.getActions('timeUsage')}
-        modal={false}
-        open={this.state.open.timeUsage}
-        onRequestClose={this.handleClose}
-      >
-        <input
-          type='number'
-          min='60'
-          max='9999'
-          step='1'
-          defaultValue={this.state.values.timeUsage.timeUsageVal}
-          ref={(timeUsageVal) => { this.timeUsageVal = timeUsageVal }} />
-      </Dialog>
-    )
-  }
-
-  passBucket () {
-    return (
-      <Dialog
-        title='Time Usage'
-        actions={this.getActions('passBucket')}
-        modal={false}
-        open={this.state.open.passBucket}
-        onRequestClose={this.handleClose}
-      >
-        <input
-          type='number'
-          min='0'
-          max='100'
-          step='1'
-          defaultValue={this.state.values.passBucket.passBucketNumber}
-          ref={(passBucketNumber) => this.passBucketNumber = passBucketNumber} />
-        <div>{this.state.values.passBucket.showMoving}</div>
-        <Toggle
-          defaultToggled={this.state.values.passBucket.showMoving}
-          label='Show Moving Average'
-          ref={(showMoving) => this.showMoving = showMoving}
-        />
-        <Toggle
-          defaultToggled={this.state.values.passBucket.showShift}
-          label='Show Shift Colors'
-          ref={(showShift) => this.showShift = showShift}
-        />
-      </Dialog>
-    )
-  }
-
-  backetDistribution () {
-    return (
-      <Dialog
-        title='Time Usage'
-        actions={this.getActions('backetDistribution')}
-        modal={false}
-        open={this.state.open.backetDistribution}
-        onRequestClose={this.handleClose}
-      >
-        <Toggle
-          defaultToggled={this.state.values.backetDistribution.separateShifts}
-          label='Separate By Shifts'
-          ref={(separateShifts) => this.separateShifts = separateShifts}
-        />
-      </Dialog>
-    )
-  }
-
   generateReports (name, key) {
     if (name === 'Cycle Statistics') {
       return (
@@ -303,10 +194,10 @@ class Configuration extends React.Component {
   render () {
     return (
         <div className='container'>
-          { this.productivityPopup() }
-          { this.timeUsage() }
-          { this.passBucket() }
-          { this.backetDistribution() }
+          { productivityPopup.call(this) }
+          { timeUsage.call(this) }
+          { passBucket.call(this) }
+          { backetDistribution.call(this) }
           <div className='step'>
             <form className='general' noValidate>
               <h1>Configuration</h1>

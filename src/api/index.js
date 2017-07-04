@@ -13,6 +13,10 @@ function getAllList () {
   return data
 }
 
+export function saveInList (item) {
+  data.push(item)
+}
+
 export function getTimezoneByLatLng ({ lat, lng }) {
   const locationParams = {
     location: `${lat},${lng}`,

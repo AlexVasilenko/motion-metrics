@@ -1,5 +1,3 @@
-import getAllList from '../../../api/index'
-
 import { getTimeZoneByName } from '../../../api/index'
 
 export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
@@ -9,7 +7,11 @@ export const UNSELECT_ALL_ITEMS = 'UNSELECT ALL ITEMS IN THE LIST'
 
 export const DOWNLOADED_TIMEZONES = 'DOWNLOADED TIMEZONES'
 
-import { newItem, uniqueName } from '../../../routes/Home/modules/items'
+import { 
+  newItem,
+  uniqueName,
+  getSelectedItem
+ } from '../../../routes/Home/modules/items'
 
 
 const getTimeZone = (name) => {
@@ -29,7 +31,8 @@ const getTimeZone = (name) => {
 export const actions = {
   newItem,
   getTimeZone,
-  uniqueName
+  uniqueName,
+  getSelectedItem
 }
 
 // ------------------------------------

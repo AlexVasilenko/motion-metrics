@@ -13,6 +13,7 @@ import SelectFields from './../SelectFields'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import 'babel-polyfill'
+import validator from '../../../../components/validator'
 
 import {
   itemsForSelectFields,
@@ -45,7 +46,7 @@ class GeneralSettings extends React.Component {
       title: '',
       monitoringReport: '',
       repeat: defaultRepeatValue,
-      timeZone: '',
+      timeZone: 'Type text',
       reportTime: '',
       recipient: '',
       errors: {},
@@ -56,6 +57,27 @@ class GeneralSettings extends React.Component {
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
     this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
     this.handleDate = (event, value) => this.setState({ reportTime: value })
+  }
+
+  componentWillReceiveProps (newProps, oldProps) {
+    if (newProps.editItem.id) {
+      const {
+        enabled,
+        title,
+        type,
+        timeZone,
+        from,
+        recipient,
+       } = newProps.editItem
+      this.setState({
+        enabled,
+        title,
+        monitoringReport: type,
+        timeZone: timeZone || this.state.timeZone,
+        from: new Date(from),
+        recipient
+      })
+    }
   }
 
   repeatChange (value, index) {
@@ -74,7 +96,7 @@ class GeneralSettings extends React.Component {
     }
   }
 
-  validate (values) {
+  /*validate (values) {
     // move to validator file
     let findError = false
 
@@ -94,7 +116,7 @@ class GeneralSettings extends React.Component {
       return errors
     }
     return false
-  }
+  }*/
 
   timeZoneFilter () {
     return (value) => {
@@ -115,7 +137,7 @@ class GeneralSettings extends React.Component {
         reportTime: this.state.reportTime,
         repeat: this.state.repeat,
       }
-      const errors = this.validate(validateValues)
+      const errors = validator(validateValues, roles)
       if (errors) {
         this.setState({
           errors,
@@ -128,7 +150,7 @@ class GeneralSettings extends React.Component {
         this.asyncValidation(values, {
           name: {
             validFn: ({ title }) => {
-              return this.props.uniqueName(title);
+              return this.props.uniqueName(title)
             },
             errorName: 'Name must be unique',
           },
@@ -147,7 +169,11 @@ class GeneralSettings extends React.Component {
   }
 
   render () {
-    const {isEditMode, user, form} = this.props
+    if (!this.props.editItem.id) {
+      return (<div></div>)
+    }
+    const { isEditMode, user, form } = this.props
+    debugger
     return (
       <div className='container'>
         <div className='step'>
@@ -158,12 +184,14 @@ class GeneralSettings extends React.Component {
               <div>
                 <Toggle
                   onToggle={this.onChange}
-                  label={ this.state.enabled ? 'Task enabled' : 'Task disabled' }
+                  defaultToggled={this.state.enabled}
+                  label={this.state.enabled ? 'Task enabled' : 'Task disabled'}
                   ref={(enabled) => this.enabled = enabled}
                 />
               </div>
               <TextField
-                hintText='Task Title'
+                defaultValue={this.state.title}
+                placeholder='Task Title'
                 errorText={this.state.errors.title}
                 name='title'
                 ref={(title) => this.title = title}
@@ -191,9 +219,8 @@ class GeneralSettings extends React.Component {
               <div className='form-control focusable-icon'>
                 <div className='form-control-main'>
                   <Place />
-                  <div>{this.state.timeZone.length}</div>
                   <AutoComplete
-                    hintText='Type text'
+                    hintText={this.state.timeZone}
                     dataSource={this.props.form.timeZones}
                     onUpdateInput={this.timeZoneFilter()}
                     filter={(searchText, key) => true}
@@ -210,8 +237,9 @@ class GeneralSettings extends React.Component {
                     type='time'
                     placeholder='Report Time'
                     name='time'
-                    value={this.state.timeZone}
-                    onChange={this.handleTimeZone} />
+                    value={this.state.from}
+                    onChange={this.handleTimeZone}
+                    defaultTime={this.state.from} />
                   <div>{this.state.errors.timeZone}</div>
                 </div>
               </div>

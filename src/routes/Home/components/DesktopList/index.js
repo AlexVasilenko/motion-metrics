@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar'
 import classNames from 'classnames'
 import { repeatGenerate } from '../../../../helpers/listHelper'
 
-const DesktopList = ({ tasks,  onSelect}) => (
+const DesktopList = ({ tasks,  onSelect }) => (
   <div className='desktop-container '>
     <div className='headers '>
       <div className='col-avatar '></div>
@@ -16,14 +16,14 @@ const DesktopList = ({ tasks,  onSelect}) => (
     </div>
     <List className='desktop-list '>
       { tasks.map((task, i) => {
-          const selectClass = classNames({
-              item: true,
-              selected: task.select
-          });
+        const selectClass = classNames({
+          item: true,
+          selected: task.select
+        })
         return (
           <ListItem className={selectClass} onClick={onSelect.bind(this, task.id)} key={i}>
             <div className='item-wrapper '>
-              <Avatar className='avatar col-avatar '></Avatar>
+              <Avatar className='avatar col-avatar ' />
               <div className='col-title text '>{ task.title }</div>
               <div className='col-timezone '>{ task.timeZone }</div>
               <div className='col-time '>{ task.reportTime.toString() }</div>

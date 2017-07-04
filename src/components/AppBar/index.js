@@ -62,6 +62,7 @@ export class AppBar extends React.Component {
   static propTypes = {
     selected: PropTypes.number,
     isMobile: PropTypes.bool,
+    unselect: PropTypes.func,
   }
 
   constructor () {

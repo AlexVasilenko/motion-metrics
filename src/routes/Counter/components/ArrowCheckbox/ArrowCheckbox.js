@@ -18,7 +18,7 @@ class ArrowCheckbox extends React.Component {
     }
   }
 
-  onClick() {
+  onClick () {
     if (this.state.display) {
       this.props.onCheck()
     }

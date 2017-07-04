@@ -1,11 +1,12 @@
 import getAllList from '../../../api/index'
 
+import { saveInList } from '../../../api/index'
+
 export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
 export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
 export const DOWNLOAD_ITEMS_ERROR = 'DOWNLOAD LIST ELEMENTS ERROR'
 export const UNSELECT_ALL_ITEMS = 'UNSELECT ALL ITEMS IN THE LIST'
 export const ADD_NEW_ITEM = 'ADD NEW ITEM'
-const NAME_VALIDATE = 'FINISH NAME VALIDATE'
 
 export const SELECT_ITEMS = 'SELECT ITEM'
 
@@ -32,6 +33,19 @@ const downloadItems = () => {
         })
         resolve()
       }, 200)
+    })
+  }
+}
+
+export function getSelectedItem (id) {
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
+      const editItem = getAllList().find(item => item.id.toString() === id)
+      if (editItem) {
+        resolve(editItem)
+      } else {
+        resolve({})
+      }
     })
   }
 }
@@ -91,19 +105,20 @@ const ACTION_HANDLERS = {
   },
   [UNSELECT_ALL_ITEMS]  : (state) => {
     state.items.map((item) => {
-     item.select = false;
-     return item;
+      item.select = false
+      return item
     })
 
     return {
-        ...state
+      ...state
     }
   },
   [ADD_NEW_ITEM]       : (state, action) => {
+    saveInList(action.payload)
     state.items.push(action.payload)
 
     return {
-        ...state
+      ...state
     }
   },
 }

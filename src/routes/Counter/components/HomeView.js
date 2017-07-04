@@ -21,10 +21,30 @@ class HomeView extends React.Component {
 
   constructor (props) {
     super()
+    this.state = {
+      editItem: {}
+    }
+
+    const editId = props.params.id
+    if (editId) {
+      props.getSelectedItem(editId).then(this.setValue.bind(this))
+    }
+  }
+
+  componentDidMount () {
+    const editId = this.props.params.id
+    if (editId) {
+      this.props.getSelectedItem(editId).then(this.setValue.bind(this))
+    }
+  }
+
+  setValue (item) {
+    this.setState({
+      editItem: item
+    })
   }
 
   render () {
-    // что-то нужно сделать с items
     return (<div>
       <Nav selectMode={this.props.selectedItems} />
       <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
@@ -35,7 +55,8 @@ class HomeView extends React.Component {
         step={this.props.form.step}
         saveItem={this.props.newItem}
         getTimeZone={this.props.getTimeZone}
-        uniqueName={this.props.uniqueName} />
+        uniqueName={this.props.uniqueName}
+        editItem={this.state.editItem} />
     </div>)
   }
 }

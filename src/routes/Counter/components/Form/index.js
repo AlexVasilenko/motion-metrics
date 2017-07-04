@@ -13,8 +13,10 @@ class Form extends React.Component {
     isEditMode: PropTypes.bool,
   }
 
-  constructor () {
+  constructor (props) {
     super()
+    console.log(props.editItem)
+
     this.state = {
       step: 1,
 
@@ -26,23 +28,24 @@ class Form extends React.Component {
         from: '',
         recipient: '',
       },
+      id: null,
       confirm: {
         equipment: '',
         unit: '',
         configuration: {
-          productivity: '',
-          timeUsage: '',
-          cycleStatistics: '',
-          passBucketPayload: '',
-          passBucketDistribution: ''
+          productivity: {},
+          timeUsage: {},
+          cycleStatistics: {},
+          passBucketPayload: {},
+          passBucketDistribution: {}
         }
       }
     }
     this.nextStep = this.nextStep.bind(this)
   }
 
-  nextStep(formName, data) {
-    const { step } = this.state;
+  nextStep (formName, data) {
+    const { step } = this.state
     if (step !== 2) {
       this.setState({
         step: this.state.step + 1,
@@ -50,9 +53,9 @@ class Form extends React.Component {
       })
     } else {
       const newElement = {
-          id: Math.random(),
-          ...this.state.generalSetting,
-          ...data
+        id: Math.random(),
+        ...this.state.generalSetting,
+        ...data
       }
       this.props.saveItem(newElement).then(() => {
         browserHistory.push('/')
@@ -60,19 +63,20 @@ class Form extends React.Component {
     }
   }
 
-  handleChange(field) {
+  handleChange (field) {
     return (evt) => this.setState({ [field]: evt.target.value })
   }
 
-  render() {
-    const {isEditMode, user, form, step, getTimeZone, uniqueName} = this.props
-    if (this.state.step === 1) {
+  render () {
+    const { isEditMode, user, form, step, getTimeZone, uniqueName } = this.props
+    if (this.state.step === 2) {
       return <GeneralSettings
         form={form}
+        editItem={this.props.editItem}
         onSubmit={this.nextStep}
         getTimeZone={getTimeZone}
         uniqueName={uniqueName} />
-    } else if (this.state.step === 2) {
+    } else if (this.state.step === 1) {
       return <Configuration onSubmit={this.nextStep} />
     }
   }
