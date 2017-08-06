@@ -1,0 +1,21 @@
+.searchInput hr {
+    border-bottom: 0;
+}
+
+.example-enter {
+  width: 0;
+}
+
+.example-enter.example-enter-active {
+  width: 100%;
+  transition: width 5000ms ease-in;
+}
+
+.example-leave {
+  width: 100%;
+}
+
+.example-leave.example-leave-active {
+  width: 0;
+  transition: width 3000ms ease-in;
+}

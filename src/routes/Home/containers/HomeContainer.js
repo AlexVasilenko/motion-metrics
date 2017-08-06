@@ -19,6 +19,10 @@ const selectFn = (state) => state.items.items.filter((item) => item.select).leng
 
 const selectedCount = createSelector(selectFn, (count) => count)
 
+const getIds = (state) => state.items.items.filter((item) => item.select).map(select => select.id)
+
+const selectIds = createSelector(getIds, (ids) => ids)
+
 const sortFunction = (state) => {
   state.items.items.sort((first, second) => {
     if (first.title < second.title) return -1
@@ -32,7 +36,9 @@ const sortElements = createSelector(sortFunction, (items) => items)
 
 const mapStateToProps = (state) => ({
   items : sortElements(state),
-  selectedItems: selectedCount(state)
+  selectedItems: selectedCount(state),
+  currentUser: state.items.currentUser,
+  selectedIds: selectIds(state),
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

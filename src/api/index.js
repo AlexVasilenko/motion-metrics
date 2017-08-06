@@ -13,7 +13,12 @@ function getAllList () {
   return data
 }
 
-export function saveInList (item) {
+export function saveOrUpdate (item) {
+  const exists = data.findIndex(data => data.id === item.id)
+  if (exists !== -1) {
+    data[exists] = item
+    return
+  }
   data.push(item)
 }
 

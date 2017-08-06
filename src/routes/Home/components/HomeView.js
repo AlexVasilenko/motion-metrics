@@ -5,13 +5,14 @@ import AppBar from '../../../components/AppBar'
 import TaskList from '../../Home/components/TaskList'
 import PropTypes from 'prop-types'
 
-let selected = []
-
 class HomeView extends React.Component {
   static propTypes = {
     items: PropTypes.object.isRequired,
     downloadItems: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
+    selectedItems: PropTypes.number.isRequired,
+    unSelect: PropTypes.func.isRequired,
+    currentUser: PropTypes.object.isRequired,
   }
 
   constructor (props) {
@@ -20,11 +21,21 @@ class HomeView extends React.Component {
   }
 
   render () {
-    // что-то нужно сделать с items
     return (<div>
-      <Nav selectMode={this.props.selectedItems} />
-      <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
-      <TaskList tasks={this.props.items.items} onSelect={this.props.onSelect} />
+      <Nav
+        selectMode={this.props.selectedItems}
+        user={this.props.currentUser}
+      />
+      <AppBar
+        selected={this.props.selectedItems}
+        unselect={this.props.unSelect}
+        selectedIds={this.props.selectedIds}
+      />
+      <TaskList
+        tasks={this.props.items.items}
+        onSelect={this.props.onSelect}
+        selectMode={this.props.selectedItems}
+      />
     </div>)
   }
 }

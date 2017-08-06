@@ -1,6 +1,6 @@
 import getAllList from '../../../api/index'
 
-import { saveInList } from '../../../api/index'
+import { saveOrUpdate } from '../../../api/index'
 
 export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
 export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
@@ -114,8 +114,7 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_NEW_ITEM]       : (state, action) => {
-    saveInList(action.payload)
-    state.items.push(action.payload)
+    saveOrUpdate(action.payload)
 
     return {
       ...state
@@ -129,7 +128,11 @@ const ACTION_HANDLERS = {
 const initialState = {
   loading: false,
   items: [],
-  selectedItems: 0
+  selectedItems: 0,
+  currentUser: {
+    name: 'alex',
+    surrname: 'Vasylenko',
+  },
 }
 export default function itemsReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

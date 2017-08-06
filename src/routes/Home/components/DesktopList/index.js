@@ -4,8 +4,13 @@ import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import classNames from 'classnames'
 import { repeatGenerate } from '../../../../helpers/listHelper'
+import { blue500 } from 'material-ui/styles/colors'
 
-const DesktopList = ({ tasks,  onSelect }) => (
+import Done from 'material-ui/svg-icons/action/done'
+
+import './styles.scss'
+
+const DesktopList = ({ tasks,  onSelect, editMode }) => (
   <div className='desktop-container '>
     <div className='headers '>
       <div className='col-avatar '></div>
@@ -18,12 +23,26 @@ const DesktopList = ({ tasks,  onSelect }) => (
       { tasks.map((task, i) => {
         const selectClass = classNames({
           item: true,
-          selected: task.select
+          selected: task.select,
+          disabled: !task.enabled,
+        })
+        const avatarClasses = classNames({
+          avatar: true,
+          'col-avatar': true,
+          'select-mode': editMode,
+          'select-avatar': task.select,
         })
         return (
           <ListItem className={selectClass} onClick={onSelect.bind(this, task.id)} key={i}>
             <div className='item-wrapper '>
-              <Avatar className='avatar col-avatar ' />
+              <Avatar
+                className={avatarClasses}
+                style={{ backgroundColor: 'rgb(197, 206, 255)' }}
+                icon={task.select ? <Done style={{ fill: blue500 }} /> : ''}
+              >
+              { task.select ? '' : <span className='unselectAvatar'>PLM</span> }
+              </Avatar>
+
               <div className='col-title text '>{ task.title }</div>
               <div className='col-timezone '>{ task.timeZone }</div>
               <div className='col-time '>{ task.reportTime.toString() }</div>
@@ -35,7 +54,9 @@ const DesktopList = ({ tasks,  onSelect }) => (
   </div>
 )
 DesktopList.propTypes = {
-  tasks: PropTypes.array,
+  tasks: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  editMode: PropTypes.number.isRequired,
 }
 
 export default DesktopList

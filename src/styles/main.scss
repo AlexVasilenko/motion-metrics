@@ -1,5 +1,6 @@
 @import 'base';
 @import '~bootstrap/scss/bootstrap.scss';
+@import 'colors';
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
@@ -19,3 +20,17 @@ body {
 *:after {
   box-sizing: inherit;
 }
+
+.disabled {
+  color: $inactiveText !important;
+}
+
+.select-mode {
+    background-color: white !important;
+    border: solid 1px #80deea;
+    color: #80deea;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
