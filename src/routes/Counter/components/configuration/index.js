@@ -5,10 +5,10 @@ import MenuItem from 'material-ui/MenuItem'
 import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
 import classNames from 'classnames'
-import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
-import Toggle from 'material-ui/Toggle'
+import Stepper from './../Stepper'
+import _ from 'lodash'
 /* icons */
 import Devices from 'material-ui/svg-icons/device/devices'
 import LinearScale from 'material-ui/svg-icons/editor/linear-scale'
@@ -26,19 +26,33 @@ import {
 import './styles.scss'
 
 const allRefsForModals = {
-  productivity: ['productivity'],
-  timeUsage: ['timeUsageVal'],
-  passBucket: [
-    'passBucketNumber',
-    'showMoving',
-    'showShift'
+  'productivity': [
+    {
+      ref: 'productivity',
+      refValue: 'value',
+      getValue: 'value',
+    }
   ],
-  backetDistribution: ['separateShifts'],
+  'timeUsage': [
+    {
+      ref: 'timeUsage',
+      refValue: 'value',
+      getValue: 'value',
+    }
+  ],
+  'passBucketPayload': [
+    { ref: 'movingAveragePoints', refValue: 'movingAveragePoints', getValue: 'state.switched' },
+    { ref: 'showMovingAverage', refValue: 'showMovingAverage', getValue: 'state.switched' },
+    { ref: 'showShiftColors', refValue: 'showShiftColors', getValue: 'state.switched' },
+  ],
+  'passBacketDistribution': [
+    { ref: 'separateShifts', refValue: 'value', getValue: 'value' },
+  ],
 }
 
 const unitSettingsFields = ['m kg s', 'cm kg s', 'mm g s', 'in lb s']
 
-const reportComponents = ['productivity', 'timeUsage', 'Cycle Statistics', 'passBucket', 'backetDistribution']
+const reportComponents = ['productivity', 'timeUsage', 'cycleStatistics', 'passBucketPayload', 'passBacketDistribution']
 
 class Configuration extends React.Component {
   PropTypes = {
@@ -47,27 +61,70 @@ class Configuration extends React.Component {
     onSubmit: PropTypes.func,
   }
 
-  constructor () {
+  constructor (props) {
     super()
-    this.state = {
-      unit: '',
-      values: {
-        productivity: {},
-        timeUsage: {},
-        passBucket: {},
-        backetDistribution: {},
-      },
-      select: {
-        productivity: false,
-        timeUsage: false,
-        passBucket: false,
-        backetDistribution: false,
-      },
-      open: {
-        productivity: false,
-        timeUsage: false,
-        passBucket: false,
-        backetDistribution: false,
+    if (props.editItem) {
+      const { productivity,
+              timeUsage,
+              cycleStatistics,
+              passBucketPayload,
+              passBacketDistribution } = props.editItem.configuration
+      this.state = {
+        unit: props.editItem.unit,
+        values: {
+          productivity: {
+            ...productivity,
+            open: false,
+          },
+          timeUsage: {
+            ...timeUsage,
+            open: false,
+          },
+          cycleStatistics: {
+            ...cycleStatistics,
+            open: false,
+          },
+          passBacketDistribution: {
+            ...passBacketDistribution,
+            open: false,
+          },
+          passBucketPayload: {
+            ...passBacketDistribution,
+            open: false,
+          },
+        }
+      }
+    } else {
+      this.state = {
+        unit: '',
+        values: {
+          productivity: {
+            enabled: false,
+            open: false,
+            value: 0.1,
+          },
+          timeUsage: {
+            enabled: false,
+            open: false,
+            value: 0,
+          },
+          cycleStatistics: {
+            enabled: false,
+            open: false,
+          },
+          passBucketPayload: {
+            enabled: false,
+            open: false,
+            showMovingAverage: false,
+            showShiftColors: false,
+            movingAveragePoints: 0,
+          },
+          passBacketDistribution: {
+            open: false,
+            enabled: false,
+            separateShifts: false,
+          },
+        },
       }
     }
   }
@@ -77,29 +134,37 @@ class Configuration extends React.Component {
       const validateValues = {
         equipment: this.equipment.getValue(),
       }
-      const errors = validator(validateValues, roles)
-      if (errors) {
-        this.setState({
-          errors,
-        })
-      } else {
-        const values = {
-          enabled: this.state.enabled,
-          ...validateValues,
-          ...this.state.values,
+      const validFn = new validator({
+        sync: roles,
+      }, (data) => {
+        if (data.status === 'pending') {
+          
+        } else if (data.status === 'invalid') {
+          this.setState({
+            errors: data.errors,
+          })
+        } else {
+          this.props.onSubmit('configuration', {
+            ...validateValues,
+            configuration: this.state.values,
+          })
         }
-        this.props.onSubmit('generalSetting', values)
-      }
+      })
+      
+      validFn.validator(validateValues)
     }
   }
 
   openModal (name) {
     return () => {
-      if (this.state.select[name]) {
+      if (this.state.values[name].enabled) {
         this.setState({
-          open: {
-            ...this.state.open,
-            [name]: true,
+          values: {
+            ...this.state.values,
+            [name]: {
+              ...this.state.values[name],
+              open: true,
+            },
           }
         })
       }
@@ -110,16 +175,19 @@ class Configuration extends React.Component {
     return classNames({
       'form-control': true,
       'checkbox-wrapper': true,
-      'disabled': !this.state.select[name]
+      'disabled': !this.state.values[name].enabled,
     })
   }
 
   onCheck (name) {
     return () => {
       this.setState({
-        select: {
-          ...this.state.select,
-          [name]: !this.state.select[name],
+        values: {
+          ...this.state.values,
+          [name]: {
+            ...this.state.values[name],
+            enabled: !this.state.values[name].enabled,
+          },
         }
       })
     }
@@ -128,9 +196,12 @@ class Configuration extends React.Component {
   handleClose (name) {
     return () => {
       this.setState({
-        open: {
-          ...this.state.open,
-          [name]: false,
+        values: {
+          ...this.state.values,
+          [name]: {
+            ...this.state.values[name],
+            open: false,
+          },
         }
       })
     }
@@ -138,23 +209,20 @@ class Configuration extends React.Component {
 
   saveValue (name) {
     return () => {
-      const values = {}
+      const values = {
+        enabled: true,
+      }
       const fields = allRefsForModals[name]
 
       for (let refName of fields) {
-        if (refName) {
-          values[refName] = this[refName].value
-        }
+        const { refValue, ref, getValue } = refName
+        _.set(values, refValue, _.get(this[ref], getValue, false))
       }
       this.setState({
         values: {
           ...this.state.values,
           [name]: values,
         },
-        open: {
-          ...this.state.open,
-          [name]: false,
-        }
       })
     }
   }
@@ -176,16 +244,16 @@ class Configuration extends React.Component {
   }
 
   generateReports (name, key) {
-    if (name === 'Cycle Statistics') {
+    if (name === 'cycleStatistics') {
       return (
         <div className='form-control checkbox-wrapper' key={key}>
-          <Checkbox label={name} />
+          <Checkbox label={name} defaultChecked={this.state.values[name].enabled} />
         </div>
       )
     }
     return (
       <div className={this.generateClasses(name)} key={key}>
-        <Checkbox label={name} onCheck={this.onCheck(name)} />
+        <Checkbox defaultChecked={this.state.values[name].enabled} label={name} onCheck={this.onCheck(name)} />
         <ArrowDropDown onClick={this.openModal(name)} />
       </div>
     )
@@ -200,6 +268,7 @@ class Configuration extends React.Component {
           { backetDistribution.call(this) }
           <div className='step'>
             <form className='general' noValidate>
+              <Stepper step={1} editMode={this.props.isEditMode} />
               <h1>Configuration</h1>
               <div className='form-control focusable-icon'>
                 <Devices />
@@ -230,8 +299,15 @@ class Configuration extends React.Component {
                 }
               </div>
               <div className='buttons'>
-                <RaisedButton label='Cancel' />
-                <RaisedButton label='Submit' primary onClick={this.submitHandle()} />
+                <RaisedButton
+                  onClick={this.props.back}
+                  label='Back'
+                />
+                <RaisedButton
+                  label={this.props.isEditMode ? 'update' : 'create'}
+                  primary
+                  onClick={this.submitHandle()}
+                />
               </div>
             </form>
           </div>

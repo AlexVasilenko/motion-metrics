@@ -15,29 +15,27 @@ class Form extends React.Component {
 
   constructor (props) {
     super()
-    console.log(props.editItem)
 
     this.state = {
       step: 1,
 
-      generalSetting: {
+      values: {
         enabled: false,
         title: '',
         monitoringReport: '',
         timeZone: '',
         from: '',
         recipient: '',
-      },
-      id: null,
-      confirm: {
-        equipment: '',
-        unit: '',
         configuration: {
-          productivity: {},
-          timeUsage: {},
-          cycleStatistics: {},
-          passBucketPayload: {},
-          passBucketDistribution: {}
+          equipment: '',
+          unit: '',
+          configuration: {
+            productivity: {},
+            timeUsage: {},
+            cycleStatistics: {},
+            passBucketPayload: {},
+            passBucketDistribution: {}
+          }
         }
       }
     }
@@ -49,14 +47,18 @@ class Form extends React.Component {
     if (step !== 2) {
       this.setState({
         step: this.state.step + 1,
-        [formName]: data,
+        values: {
+          ...this.state.values,
+          ...data,
+        },
       })
     } else {
       const newElement = {
-        id: Math.random(),
-        ...this.state.generalSetting,
-        ...data
+        ...this.state.values,
+        configuration: data.configuration,
+        equipment: data.equipment,
       }
+
       this.props.saveItem(newElement).then(() => {
         browserHistory.push('/')
       })
@@ -67,17 +69,33 @@ class Form extends React.Component {
     return (evt) => this.setState({ [field]: evt.target.value })
   }
 
+  back () {
+    return () => {
+      this.setState({
+        step: 1,
+      })
+      this.props.back()
+    }
+  }
+
   render () {
-    const { isEditMode, user, form, step, getTimeZone, uniqueName } = this.props
-    if (this.state.step === 2) {
+    const { isEditMode, user, form, step, getTimeZone, uniqueName, editItem } = this.props
+    if (this.state.step === 1) {
       return <GeneralSettings
         form={form}
-        editItem={this.props.editItem}
+        editItem={editItem}
         onSubmit={this.nextStep}
         getTimeZone={getTimeZone}
-        uniqueName={uniqueName} />
-    } else if (this.state.step === 1) {
-      return <Configuration onSubmit={this.nextStep} />
+        uniqueName={uniqueName}
+        isEditMode={isEditMode}
+      />
+    } else if (this.state.step === 2) {
+      return <Configuration
+        onSubmit={this.nextStep}
+        isEditMode={isEditMode}
+        editItem={editItem}
+        back={this.back()}
+      />
     }
   }
 }

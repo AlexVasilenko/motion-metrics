@@ -1,11 +1,11 @@
 export const itemsForSelectFields = [
-    { name: 'Monday', value: 'Mon' },
-    { name: 'Tuesday', value: 'Tue' },
-    { name: 'Wednesday', value: 'Wed' },
-    { name: 'Thursday', value: 'Thur' },
-    { name: 'Friday', value: 'Fri' },
-    { name: 'Saturday', value: 'Sat' },
-    { name: 'Sunday', value: 'Sun' },
+    { name: 'Monday', value: 'Mon', number: 1 },
+    { name: 'Tuesday', value: 'Tue', number: 2 },
+    { name: 'Wednesday', value: 'Wed', number: 3 },
+    { name: 'Thursday', value: 'Thur', number: 4 },
+    { name: 'Friday', value: 'Fri', number: 5 },
+    { name: 'Saturday', value: 'Sat', number: 6 },
+    { name: 'Sunday', value: 'Sun', number: 7 },
 ]
 
 export const recipients = [
@@ -14,7 +14,8 @@ export const recipients = [
   { name: 'baz', value: 'baz' }
 ]
 
-export const defaultRepeatValue = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
+//export const defaultRepeatValue = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
+export const defaultRepeatValue = itemsForSelectFields
 
 export const roles = {
   required: {

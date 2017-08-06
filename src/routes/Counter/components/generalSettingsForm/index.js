@@ -14,6 +14,7 @@ import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import 'babel-polyfill'
 import validator from '../../../../components/validator'
+import { Link } from 'react-router'
 
 import {
   itemsForSelectFields,
@@ -30,6 +31,8 @@ import Today from 'material-ui/svg-icons/action/today'
 import Repeat from 'material-ui/svg-icons/av/repeat'
 import People from 'material-ui/svg-icons/social/people'
 
+import './styles.scss'
+
 class GeneralSettings extends React.Component {
   PropTypes = {
     user: PropTypes.object,
@@ -39,13 +42,13 @@ class GeneralSettings extends React.Component {
     getTimeZone: PropTypes.func,
   }
 
-  constructor () {
+  constructor (props) {
     super()
     this.state = {
       enabled: false,
       title: '',
       monitoringReport: '',
-      repeat: defaultRepeatValue,
+      repeat: defaultRepeatValue.map(item => item),
       timeZone: 'Type text',
       reportTime: '',
       recipient: '',
@@ -55,8 +58,33 @@ class GeneralSettings extends React.Component {
     this.submit = this.submitHandle()
     this.handleMonitoringReport = (event, index, value) => this.setState({ monitoringReport: value })
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
-    this.handleTimeZone = (event, value) => this.setState({ timeZone: value })
+    this.handleTimeZone = (event, value) => this.setState({ from: value.toString() })
     this.handleDate = (event, value) => this.setState({ reportTime: value })
+
+    if (props.editItem && props.editItem.id) {
+      const {
+        enabled,
+        title,
+        type,
+        timeZone,
+        from,
+        recipient,
+        repeat,
+        id,
+       } = props.editItem
+
+      this.state = {
+        id,
+        enabled,
+        title,
+        monitoringReport: type,
+        timeZone: timeZone || this.state.timeZone,
+        from: new Date(from),
+        repeat,
+        recipient,
+        errors: {},
+      }
+    }
   }
 
   componentWillReceiveProps (newProps, oldProps) {
@@ -68,8 +96,11 @@ class GeneralSettings extends React.Component {
         timeZone,
         from,
         recipient,
+        id,
        } = newProps.editItem
+
       this.setState({
+        id,
         enabled,
         title,
         monitoringReport: type,
@@ -82,12 +113,13 @@ class GeneralSettings extends React.Component {
 
   repeatChange (value, index) {
     return () => {
-      const arrayIndex = this.state.repeat.findIndex((item) => item === value)
+      const arrayIndex = defaultRepeatValue.findIndex((item) => item.value === value)
+      const inRepeat = this.state.repeat.findIndex(item => item.value === value)
       const currentArray = this.state.repeat
-      if (arrayIndex + 1) {
+      if (inRepeat !== -1) {
         currentArray.splice(arrayIndex, 1)
       } else {
-        currentArray.splice(index - 1, 0, value)
+        currentArray.splice(arrayIndex, 0, defaultRepeatValue[arrayIndex])
       }
 
       this.setState({
@@ -95,28 +127,6 @@ class GeneralSettings extends React.Component {
       })
     }
   }
-
-  /*validate (values) {
-    // move to validator file
-    let findError = false
-
-    const errors = {}
-
-    for (let value in values) {
-      for (let validate in roles) {
-        if (roles[validate].fields.indexOf(value) !== -1) {
-          if (!roles[validate].fn(values[value]) && !errors[value]) {
-            errors[value] = roles[validate].text
-            findError = true
-          }
-        }
-      }
-    }
-    if (findError) {
-      return errors
-    }
-    return false
-  }*/
 
   timeZoneFilter () {
     return (value) => {
@@ -135,51 +145,49 @@ class GeneralSettings extends React.Component {
         monitoringReport: this.state.monitoringReport,
         timeZone: this.state.timeZone.toString(),
         reportTime: this.state.reportTime,
-        repeat: this.state.repeat,
+        repeat: this.state.repeat.map(item => item.number),
       }
-      const errors = validator(validateValues, roles)
-      if (errors) {
-        this.setState({
-          errors,
-        })
-      } else {
-        const values = {
-          enabled: this.state.enabled,
-          ...validateValues,
-        }
-        this.asyncValidation(values, {
-          name: {
-            validFn: ({ title }) => {
-              return this.props.uniqueName(title)
+      const validFn = new validator({
+        sync: roles,
+        async: {
+          uniqueTitle: {
+            values: {
+              title: validateValues.title,
             },
-            errorName: 'Name must be unique',
-          },
-
-        }).then((result) => {
-          if (result.valid) {
-            this.props.onSubmit('generalSetting', values)
-          } else {
-            this.setState({
-              asyncErrors: result.errors,
-            })
+            promise: (fields, res, rej) => {
+              setTimeout(() => {
+                res(true)
+              }, 3000)
+            }
           }
-        })
-      }
+        }
+       }, (data) => {
+        if (data.status === 'pending') {
+          
+        } else if (data.status === 'invalid') {
+          this.setState({
+           errors: data.errors,
+          })
+        } else {
+          this.props.onSubmit('generalSetting', {
+            id: this.props.editItem.id || Math.random(),
+            enabled: this.state.enabled,
+            ...validateValues,
+          })
+        }
+      })
+      
+      validFn.validator(validateValues)
     }
   }
 
   render () {
-    if (!this.props.editItem.id) {
-      return (<div></div>)
-    }
     const { isEditMode, user, form } = this.props
-    debugger
     return (
       <div className='container'>
         <div className='step'>
           <form className='general' action='#' noValidate>
-            <Stepper step={0} />
-            <Slider className='enable-toggle' name='enabled' />
+            <Stepper step={0} editMode={isEditMode} />
             <span>
               <div>
                 <Toggle
@@ -190,6 +198,7 @@ class GeneralSettings extends React.Component {
                 />
               </div>
               <TextField
+                className='fitElement'
                 defaultValue={this.state.title}
                 placeholder='Task Title'
                 errorText={this.state.errors.title}
@@ -201,6 +210,8 @@ class GeneralSettings extends React.Component {
               <div className='form-control-main select-wrapper'>
                 <Assignment />
                 <SelectField
+                  className='fitElement'
+                  style={{ width: '90%' }}
                   placeholder='Task Type'
                   errorText={this.state.errors.monitoringReport}
                   name='type'
@@ -220,6 +231,7 @@ class GeneralSettings extends React.Component {
                 <div className='form-control-main'>
                   <Place />
                   <AutoComplete
+                    className='fitElement'
                     hintText={this.state.timeZone}
                     dataSource={this.props.form.timeZones}
                     onUpdateInput={this.timeZoneFilter()}
@@ -232,6 +244,7 @@ class GeneralSettings extends React.Component {
                 <AccessTime />
                 <div className='form-control-main date-wrapper'>
                   <TimePicker
+                    className='fitElement'
                     hintText='12hr Format'
                     format='24hr'
                     type='time'
@@ -249,10 +262,11 @@ class GeneralSettings extends React.Component {
                 <Today />
                 <div className='form-control-main date-wrapper'>
                   <DatePicker
+                    className='fitElement'
                     hintText='Landscape Inline Dialog'
                     mode='landscape'
                     name='from'
-                    value={this.state.reportTime}
+                    value={this.state.from}
                     onChange={this.handleDate} />
                   <div>{this.state.errors.reportTime}</div>
                 </div>
@@ -260,8 +274,9 @@ class GeneralSettings extends React.Component {
               <div className='form-control select-wrapper focusable-icon'>
                 <Repeat />
                 <SelectFields
+                  className='fitElement'
                   onChange={this.repeatChange.bind(this)}
-                  text={this.state.repeat.join(',')}
+                  text={this.state.repeat.map(item => item.value).join(',')}
                   errorText={this.state.errors.repeat}
                   fields={itemsForSelectFields} />
                 <div>{ this.state.errors.repeat }</div>
@@ -270,6 +285,7 @@ class GeneralSettings extends React.Component {
             <div className='form-control tags-wrapper focusable-icon'>
               <People />
               <SelectField
+                className='fitElement'
                 placeholder='Recipient'
                 errorText={this.state.errors.recipient}
                 name='type'
@@ -286,8 +302,12 @@ class GeneralSettings extends React.Component {
               </SelectField>
             </div>
             <div className='buttons'>
-              <RaisedButton label='Cancel' />
-              <RaisedButton label='Submit' primary onClick={this.submit} />
+              <Link to='/'>
+                <RaisedButton
+                  label='Cancel'
+                />
+              </Link>
+              <RaisedButton label='Continue' primary onClick={this.submit} />
             </div>
           </form>
         </div>

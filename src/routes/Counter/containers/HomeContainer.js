@@ -15,13 +15,13 @@ import HomeView from './../components/HomeView.js'
 
 const mapDispatchToProps = actions
 
-
 const mapStateToProps = (state) => {
   return {
     form: state.form.form,
     user: state.form.user,
     isEditMode: state.form.isEditMode,
-    timeZones: state.form.timeZones
+    timeZones: state.form.timeZones,
+    currentUser: state.items.currentUser,
   }
 }
 

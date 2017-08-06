@@ -6,18 +6,19 @@ import {
     StepLabel,
 } from 'material-ui/Stepper'
 
-const StepComponent = ({ step }) => (
+const StepComponent = ({ step, editMode }) => (
     <Stepper activeStep={step}>
-        <Step>
+        <Step completed={editMode}>
             <StepLabel>General Setting</StepLabel>
         </Step>
-        <Step>
+        <Step completed={editMode}>
             <StepLabel>Configuration</StepLabel>
         </Step>
     </Stepper>
 )
 StepComponent.propTypes = {
   step: PropTypes.number.isRequired,
+  editMode: PropTypes.bool.isRequired,
 }
 
 export default StepComponent

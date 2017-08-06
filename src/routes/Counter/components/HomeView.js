@@ -5,9 +5,6 @@ import AppBar from '../../../components/AppBar'
 import Form from './Form'
 import PropTypes from 'prop-types'
 
-
-let selected = []
-
 class HomeView extends React.Component {
   static propTypes = {
     selectedItems: PropTypes.func,
@@ -40,23 +37,37 @@ class HomeView extends React.Component {
 
   setValue (item) {
     this.setState({
-      editItem: item
+      editItem: item,
+      isEditMode: true,
     })
+  }
+
+  back () {
+    return () => {
+      this.setState({
+        editItem: { ...this.state.editItem },
+      })
+    }
   }
 
   render () {
     return (<div>
-      <Nav selectMode={this.props.selectedItems} />
-      <AppBar selected={this.props.selectedItems} unselect={this.props.unSelect} />
+      <Nav selectMode={this.props.selectedItems} user={this.props.currentUser} />
+      <AppBar
+        selected={this.props.selectedItems}
+        unselect={this.props.unSelect}
+        editMode={this.state.isEditMode}
+        textMode={this.state.isEditMode ? 'Edit' : 'Create'} />
       <Form
-        isEditMode={this.props.isEditMode}
+        isEditMode={this.state.isEditMode}
         user={this.props.user}
         form={this.props.form}
         step={this.props.form.step}
         saveItem={this.props.newItem}
         getTimeZone={this.props.getTimeZone}
         uniqueName={this.props.uniqueName}
-        editItem={this.state.editItem} />
+        editItem={this.state.editItem}
+        back={this.back()} />
     </div>)
   }
 }

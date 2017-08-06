@@ -13,7 +13,7 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
         title='Productivity'
         actions={this.getActions('productivity')}
         modal={false}
-        open={this.state.open.productivity}
+        open={this.state.values.productivity.open}
         onRequestClose={this.handleClose}
       >
         <input
@@ -21,7 +21,7 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
           min='0.1'
           max='99.999'
           step='0.001'
-          defaultValue={this.state.values.productivity.productivity}
+          defaultValue={this.state.values.productivity.value}
           ref={(productivity) => this.productivity = productivity} />
       </Dialog>
     )
@@ -33,7 +33,7 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
         title='Time Usage'
         actions={this.getActions('timeUsage')}
         modal={false}
-        open={this.state.open.timeUsage}
+        open={this.state.values.timeUsage.open}
         onRequestClose={this.handleClose}
       >
         <input
@@ -41,8 +41,8 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
           min='60'
           max='9999'
           step='1'
-          defaultValue={this.state.values.timeUsage.timeUsageVal}
-          ref={(timeUsageVal) => { this.timeUsageVal = timeUsageVal }} />
+          defaultValue={this.state.values.timeUsage.value}
+          ref={(timeUsage) => { this.timeUsageVal = timeUsage }} />
       </Dialog>
     )
   }
@@ -51,9 +51,9 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
     return (
       <Dialog
         title='Time Usage'
-        actions={this.getActions('passBucket')}
+        actions={this.getActions('passBucketPayload')}
         modal={false}
-        open={this.state.open.passBucket}
+        open={this.state.values.passBucketPayload.open}
         onRequestClose={this.handleClose}
       >
         <input
@@ -61,18 +61,18 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
           min='0'
           max='100'
           step='1'
-          defaultValue={this.state.values.passBucket.passBucketNumber}
-          ref={(passBucketNumber) => this.passBucketNumber = passBucketNumber} />
-        <div>{this.state.values.passBucket.showMoving}</div>
+          defaultValue={this.state.values.passBucketPayload.movingAveragePoints}
+          ref={(movingAveragePoints) => this.movingAveragePoints = movingAveragePoints} />
+        <div>{this.state.values.passBucketPayload.showMovingAverage}</div>
         <Toggle
-          defaultToggled={this.state.values.passBucket.showMoving}
+          defaultToggled={this.state.values.passBucketPayload.showMovingAverage}
           label='Show Moving Average'
-          ref={(showMoving) => this.showMoving = showMoving}
+          ref={(showMovingAverage) => this.showMovingAverage = showMovingAverage}
         />
         <Toggle
-          defaultToggled={this.state.values.passBucket.showShift}
+          defaultToggled={this.state.values.passBucketPayload.showShiftColors}
           label='Show Shift Colors'
-          ref={(showShift) => this.showShift = showShift}
+          ref={(showShiftColors) => this.showShiftColors = showShiftColors}
         />
       </Dialog>
     )
@@ -82,13 +82,13 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
     return (
       <Dialog
         title='Time Usage'
-        actions={this.getActions('backetDistribution')}
+        actions={this.getActions('passBacketDistribution')}
         modal={false}
-        open={this.state.open.backetDistribution}
+        open={this.state.values.passBacketDistribution.open}
         onRequestClose={this.handleClose}
       >
         <Toggle
-          defaultToggled={this.state.values.backetDistribution.separateShifts}
+          defaultToggled={this.state.values.passBacketDistribution.separateShifts}
           label='Separate By Shifts'
           ref={(separateShifts) => this.separateShifts = separateShifts}
         />

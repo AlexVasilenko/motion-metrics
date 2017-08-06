@@ -58,7 +58,7 @@ const initialState = {
     step: 1,
     enabled: false,
     timeZones: [],
-  }
+  },
 }
 export default function formReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
