@@ -11,13 +11,13 @@ import Modal from '../../components/modal'
 
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit'
-import Search from 'material-ui/svg-icons/action/search'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Close from 'material-ui/svg-icons/navigation/close'
+import Search from '../../components/search'
 
 import './styles.scss'
 
-const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, onDelete) => {
+const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, onDelete, selectedIds) => {
   return (
     <div className={selectClass}>
       <nav className='selection-nav edit-mode'>
@@ -25,7 +25,7 @@ const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, 
           <Close />
         </IconButton>
         { selected ? <span className='title'>{selected} selected</span> : ''}
-        { selected === 1 ? <IconButton ><EditIcon /></IconButton> : '' }
+        { selected === 1 ? <Link to='/edit/{selectedIds[0]}'><IconButton ><EditIcon /></IconButton></Link> : '' }
         <IconButton onClick={onOpen}>
           <Delete />
         </IconButton>
@@ -34,7 +34,7 @@ const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, 
   )
 }
 
-const unselectAppBar = (snack, closeSnack) => (
+const unselectAppBar = (snack, closeSnack, editMode, textMode) => (
   <div className='wrapper'>
     <Snackbar
       open={snack.open}
@@ -49,10 +49,8 @@ const unselectAppBar = (snack, closeSnack) => (
           <ContentAdd />
         </FloatingActionButton>
       </Link>
-      <span className='title'>automated tasks</span>
-      <IconButton className=' search '>
-        <Search />
-      </IconButton>
+      <span className='title'>{textMode} automated tasks</span>
+      <Search />
     </nav>
   </div>
 )
@@ -63,6 +61,7 @@ export class AppBar extends React.Component {
     selected: PropTypes.number,
     isMobile: PropTypes.bool,
     unselect: PropTypes.func,
+    editMode: PropTypes.bool,
   }
 
   constructor () {
@@ -111,7 +110,6 @@ export class AppBar extends React.Component {
   }
 
   render () {
-    // refactor modal
     const selected = this.props.selected
     const selectClass = classNames({
       wrapper: true,
@@ -133,7 +131,7 @@ export class AppBar extends React.Component {
               <Close />
             </IconButton>
             { selected ? <span className='title'>{selected} selected</span> : ''}
-            { selected === 1 ? <IconButton ><EditIcon /></IconButton> : '' }
+            { selected === 1 ? <Link to={`/edit/${this.props.selectedIds[0]}`}><IconButton ><EditIcon /></IconButton></Link> : '' }
             <IconButton onClick={this.handleOpen}>
               <Delete />
             </IconButton>
@@ -141,9 +139,12 @@ export class AppBar extends React.Component {
         </div>
       )
     }
-    return unselectAppBar(this.state.snack, this.snackClose)
+    return unselectAppBar(
+      this.state.snack,
+      this.snackClose,
+      this.props.editMode,
+      this.props.textMode)
   }
 }
-
 
 export default AppBar
