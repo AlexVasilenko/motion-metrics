@@ -10,10 +10,10 @@ import Settings from 'material-ui/svg-icons/action/settings'
 import Feedback from 'material-ui/svg-icons/action/feedback'
 import VerifiedUser from 'material-ui/svg-icons/action/verified-user'
 import ExitToApp from 'material-ui/svg-icons/action/exit-to-app'
+import Divider from 'material-ui/Divider'
 import classNames from 'classnames'
 
 import './styles.scss'
-
 
 export const Nav = ({ selectMode, user }) => {
   const selectClass = classNames({
@@ -24,8 +24,7 @@ export const Nav = ({ selectMode, user }) => {
     <nav className={selectClass} >
       <div className='logo'>Logo</div>
       <span className='title'>Admin</span>
-      <span className='username'>{ user }&nbsp;{ user }</span>
-      <div className='initials'>{ user }{ user }</div>
+      <span className='username'>{ user.name }&nbsp;{ user.surrname }</span>
 
       <IconMenu
         iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
@@ -36,6 +35,7 @@ export const Nav = ({ selectMode, user }) => {
         <MenuItem primaryText='Settings' leftIcon={<Settings />} />
         <MenuItem primaryText='Feedback' leftIcon={<Feedback />} />
         <MenuItem primaryText='Administration' leftIcon={<VerifiedUser />} />
+        <Divider />
         <MenuItem primaryText='Sign out' leftIcon={<ExitToApp />} />
       </IconMenu>
     </nav>
@@ -44,7 +44,7 @@ export const Nav = ({ selectMode, user }) => {
 Nav.propTypes = {
   user: PropTypes.object,
   isEditMode: PropTypes.bool,
-  selectMode: PropTypes.bool,
+  selectMode: PropTypes.number.isRequired,
 }
 
 export default Nav

@@ -2,7 +2,7 @@
 @import '../../styles/_typography';
 
 
-hr {
+.container hr {
   background-color: $separator;
   height: 1px;
   border: none;
@@ -12,6 +12,8 @@ hr {
 nav {
   transition-property: background-color;
   transition-duration: .3s;
+  font-family: 'Roboto';
+  font-size: 25px;
 
   &.edit-mode {
     background-color: $selectedRow;
@@ -40,12 +42,15 @@ nav {
   @include pageTitle;
   flex: 1;
   padding-left: 20px;
+  font-size: 20px;
 }
 
 .logo {
   background-color: #000000;
   color: gray;
   text-align: center;
+  font-size: 14px;
+
 
   @include desktop {
     width: 50px;
