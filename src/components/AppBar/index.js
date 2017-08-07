@@ -17,23 +17,6 @@ import Search from '../../components/search'
 
 import './styles.scss'
 
-const selectAppBar = (selected, selectClass, unselect, onClose, onOpen, isOpen, onDelete, selectedIds) => {
-  return (
-    <div className={selectClass}>
-      <nav className='selection-nav edit-mode'>
-        <IconButton onClick={unselect}>
-          <Close />
-        </IconButton>
-        { selected ? <span className='title'>{selected} selected</span> : ''}
-        { selected === 1 ? <Link to='/edit/{selectedIds[0]}'><IconButton ><EditIcon /></IconButton></Link> : '' }
-        <IconButton onClick={onOpen}>
-          <Delete />
-        </IconButton>
-      </nav>
-    </div>
-  )
-}
-
 const unselectAppBar = (snack, closeSnack, editMode, textMode) => (
   <div className='wrapper'>
     <Snackbar
@@ -45,9 +28,11 @@ const unselectAppBar = (snack, closeSnack, editMode, textMode) => (
     />
     <nav className='app-bar'>
       <Link to='/edit/new'>
-        <FloatingActionButton className='fab' >
-          <ContentAdd />
-        </FloatingActionButton>
+        { editMode ? '' : (
+          <FloatingActionButton className='fab' >
+            <ContentAdd />
+          </FloatingActionButton>
+        ) }
       </Link>
       <span className='title'>{textMode} automated tasks</span>
       <Search />
@@ -116,6 +101,7 @@ export class AppBar extends React.Component {
       'selection-mode': selected
     })
 
+    // как избавиться от if
     if (selected) {
       return (
         <div className={selectClass}>

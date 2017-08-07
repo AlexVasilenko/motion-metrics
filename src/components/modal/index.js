@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
-
 export const Modal = ({ onClose, onDelete, isOpen, children }) => {
   const actions = [
     <FlatButton
@@ -36,6 +35,5 @@ Modal.propTypes = {
   // fix me
   children: PropTypes.any,
 }
-
 
 export default Modal

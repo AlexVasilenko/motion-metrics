@@ -13,7 +13,7 @@ import _ from 'lodash'
 import Devices from 'material-ui/svg-icons/device/devices'
 import LinearScale from 'material-ui/svg-icons/editor/linear-scale'
 import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
-import validator from '../../../../components/validator'
+import Validator from '../../../../components/validator'
 import roles from './validationRoles'
 
 import {
@@ -61,9 +61,42 @@ class Configuration extends React.Component {
     onSubmit: PropTypes.func,
   }
 
+  static defaultProps = {
+    unit: '',
+    values: {
+      productivity: {
+        enabled: false,
+        open: false,
+        value: 0.1,
+      },
+      timeUsage: {
+        enabled: false,
+        open: false,
+        value: 0,
+      },
+      cycleStatistics: {
+        enabled: false,
+        open: false,
+      },
+      passBucketPayload: {
+        enabled: false,
+        open: false,
+        showMovingAverage: false,
+        showShiftColors: false,
+        movingAveragePoints: 0,
+      },
+      passBacketDistribution: {
+        open: false,
+        enabled: false,
+        separateShifts: false,
+      },
+    },
+  }
+
   constructor (props) {
     super()
-    if (props.editItem) {
+    // not so good
+    if (props.isEditMode) {
       const { productivity,
               timeUsage,
               cycleStatistics,
@@ -96,35 +129,8 @@ class Configuration extends React.Component {
       }
     } else {
       this.state = {
-        unit: '',
-        values: {
-          productivity: {
-            enabled: false,
-            open: false,
-            value: 0.1,
-          },
-          timeUsage: {
-            enabled: false,
-            open: false,
-            value: 0,
-          },
-          cycleStatistics: {
-            enabled: false,
-            open: false,
-          },
-          passBucketPayload: {
-            enabled: false,
-            open: false,
-            showMovingAverage: false,
-            showShiftColors: false,
-            movingAveragePoints: 0,
-          },
-          passBacketDistribution: {
-            open: false,
-            enabled: false,
-            separateShifts: false,
-          },
-        },
+        unit: props.unit,
+        values: props.values,
       }
     }
   }
@@ -134,7 +140,7 @@ class Configuration extends React.Component {
       const validateValues = {
         equipment: this.equipment.getValue(),
       }
-      const validFn = new validator({
+      const validFn = new Validator({
         sync: roles,
       }, (data) => {
         if (data.status === 'pending') {
@@ -261,57 +267,57 @@ class Configuration extends React.Component {
 
   render () {
     return (
-        <div className='container'>
-          { productivityPopup.call(this) }
-          { timeUsage.call(this) }
-          { passBucket.call(this) }
-          { backetDistribution.call(this) }
-          <div className='step'>
-            <form className='general' noValidate>
-              <Stepper step={1} editMode={this.props.isEditMode} />
-              <h1>Configuration</h1>
-              <div className='form-control focusable-icon'>
-                <Devices />
-                <TextField
-                  hintText='Equipment'
-                  name='equipment'
-                  ref={(equipment) => this.equipment = equipment}
-              /><br />
+      <div className='container'>
+        { productivityPopup.call(this) }
+        { timeUsage.call(this) }
+        { passBucket.call(this) }
+        { backetDistribution.call(this) }
+        <div className='step'>
+          <form className='general' noValidate>
+            <Stepper step={1} editMode={this.props.isEditMode} />
+            <h1>Configuration</h1>
+            <div className='form-control focusable-icon'>
+              <Devices />
+              <TextField
+                hintText='Equipment'
+                name='equipment'
+                ref={(equipment) => this.equipment = equipment}
+            /><br />
+            </div>
+            <div className='form-control focusable-icon'>
+              <div className='form-control-main select-wrapper'>
+                <LinearScale />
+                <SelectField
+                  placeholder='Unit System Setting'
+                  name='type'
+                >
+                  {
+                    unitSettingsFields.map((name, key) => <MenuItem value={name} primaryText={name} key={key} />)
+                  }
+                </SelectField>
+                <div>This is required.</div>
               </div>
-              <div className='form-control focusable-icon'>
-                <div className='form-control-main select-wrapper'>
-                  <LinearScale />
-                  <SelectField
-                    placeholder='Unit System Setting'
-                    name='type'
-                  >
-                    {
-                      unitSettingsFields.map((name, key) => <MenuItem value={name} primaryText={name} key={key} />)
-                    }
-                  </SelectField>
-                  <div>This is required.</div>
-                </div>
-              </div>
-              <h2>Report Components</h2>
-              <div className='configuration'>
-                {
-                  reportComponents.map((name, key) => this.generateReports(name, key))
-                }
-              </div>
-              <div className='buttons'>
-                <RaisedButton
-                  onClick={this.props.back}
-                  label='Back'
-                />
-                <RaisedButton
-                  label={this.props.isEditMode ? 'update' : 'create'}
-                  primary
-                  onClick={this.submitHandle()}
-                />
-              </div>
-            </form>
-          </div>
+            </div>
+            <h2>Report Components</h2>
+            <div className='configuration'>
+              {
+                reportComponents.map((name, key) => this.generateReports(name, key))
+              }
+            </div>
+            <div className='buttons'>
+              <RaisedButton
+                onClick={this.props.back}
+                label='Back'
+              />
+              <RaisedButton
+                label={this.props.isEditMode ? 'update' : 'create'}
+                primary
+                onClick={this.submitHandle()}
+              />
+            </div>
+          </form>
         </div>
+      </div>
     )
   }
 }
