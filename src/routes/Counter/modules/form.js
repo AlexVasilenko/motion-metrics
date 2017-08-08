@@ -1,18 +1,17 @@
 import { getTimeZoneByName } from '../../../api/index'
 
+import {
+  newItem,
+  uniqueName,
+  getSelectedItem
+ } from '../../../routes/Home/modules/items'
+
 export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
 export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
 export const DOWNLOAD_ITEMS_ERROR = 'DOWNLOAD LIST ELEMENTS ERROR'
 export const UNSELECT_ALL_ITEMS = 'UNSELECT ALL ITEMS IN THE LIST'
 
 export const DOWNLOADED_TIMEZONES = 'DOWNLOADED TIMEZONES'
-
-import { 
-  newItem,
-  uniqueName,
-  getSelectedItem
- } from '../../../routes/Home/modules/items'
-
 
 const getTimeZone = (name) => {
   return (dispatch, getState) => {
@@ -65,4 +64,3 @@ export default function formReducer (state = initialState, action) {
 
   return handler ? handler(state, action) : state
 }
-

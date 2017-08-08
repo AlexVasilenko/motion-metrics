@@ -7,7 +7,9 @@ import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
 
 class ArrowCheckbox extends React.Component {
   static propTypes = {
-
+    value: PropTypes.bool,
+    onCheck: PropTypes.bool,
+    label: PropTypes.string,
   }
 
   constructor (props) {
@@ -19,8 +21,10 @@ class ArrowCheckbox extends React.Component {
   }
 
   onClick () {
-    if (this.state.display) {
-      this.props.onCheck()
+    return () => {
+      if (this.state.display) {
+        this.props.onCheck()
+      }
     }
   }
 
@@ -28,7 +32,7 @@ class ArrowCheckbox extends React.Component {
     return (<div>
       <div className='form-control checkbox-wrapper'>
         <Checkbox label={this.props.label} />
-        <ArrowDropDown onClick={this.onClick.bind(this)} />
+        <ArrowDropDown onClick={this.onClick()} />
       </div>
     </div>)
   }

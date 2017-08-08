@@ -1,6 +1,4 @@
-import getAllList from '../../../api/index'
-
-import { saveOrUpdate } from '../../../api/index'
+import getAllList, { saveOrUpdate } from '../../../api/index'
 
 export const DOWNLOADING_ITEMS = 'DOWNLOAD LIST ELEMENTS'
 export const DOWNLOADED_ITEMS = 'DOWNLOADED LIST ELEMENTS'
@@ -139,4 +137,3 @@ export default function itemsReducer (state = initialState, action) {
 
   return handler ? handler(state, action) : state
 }
-

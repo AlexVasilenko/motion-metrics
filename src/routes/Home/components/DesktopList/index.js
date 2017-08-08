@@ -10,10 +10,9 @@ import Done from 'material-ui/svg-icons/action/done'
 
 import './styles.scss'
 
-const DesktopList = ({ tasks,  onSelect, editMode }) => (
+const DesktopList = ({ tasks, onSelect, editMode }) => (
   <div className='desktop-container '>
     <div className='headers '>
-      <div className='col-avatar '></div>
       <div className='col-title with-border '>Task Title</div>
       <div className='col-timezone with-border '>Time Zone</div>
       <div className='col-time with-border '>Report Time</div>

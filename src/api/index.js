@@ -32,6 +32,9 @@ export function getTimezoneByLatLng ({ lat, lng }) {
     superAgent.get('https://maps.googleapis.com/maps/api/timezone/json')
     .query(locationParams)
     .end((err, tz) => {
+      if (err) {
+        reject(err)
+      }
       const c = moment.duration(Math.abs(tz.body.rawOffset), 'seconds')
       const formatted = moment('2000-01-01 00:00:00').add(c).format('HH:mm')
       const sign = tz.body.rawOffset > 0 ? '+' : '-'
@@ -48,6 +51,9 @@ function getLocationsByAddress (address) {
   return new Promise((resolve, reject) => {
     superAgent.get('https://maps.googleapis.com/maps/api/geocode/json')
     .query({ address, key: environment.gmapsApiKey }).end((err, data) => {
+      if (err) {
+        reject(err)
+      }
       const regions = data.body.results.filter(e => intersection(e.types, acceptableTypes).length)
       resolve(regions.map(r => r.geometry.location))
     })
@@ -57,7 +63,6 @@ function getLocationsByAddress (address) {
 export function getTimeZoneByName (name) {
   return new Promise((resolve, reject) => {
     getLocationsByAddress(name).then((data) => {
-
       const promises = data.map(item => getTimezoneByLatLng(item))
 
       Promise.all(promises).then((data) => {

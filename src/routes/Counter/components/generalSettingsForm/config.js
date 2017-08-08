@@ -14,7 +14,6 @@ export const recipients = [
   { name: 'baz', value: 'baz' }
 ]
 
-//export const defaultRepeatValue = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
 export const defaultRepeatValue = itemsForSelectFields
 
 export const roles = {

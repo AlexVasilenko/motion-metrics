@@ -6,11 +6,16 @@ import { browserHistory } from 'react-router'
 
 import './form.scss'
 
-
 class Form extends React.Component {
-  PropTypes = {
+  static propTypes = {
     user: PropTypes.object,
     isEditMode: PropTypes.bool,
+    saveItem: PropTypes.func,
+    back: PropTypes.func,
+    form: PropTypes.object,
+    getTimeZone: PropTypes.func,
+    uniqueName: PropTypes.string,
+    editItem: PropTypes.object,
   }
 
   constructor (props) {
@@ -79,7 +84,7 @@ class Form extends React.Component {
   }
 
   render () {
-    const { isEditMode, user, form, step, getTimeZone, uniqueName, editItem } = this.props
+    const { isEditMode, form, getTimeZone, uniqueName, editItem } = this.props
     if (this.state.step === 1) {
       return <GeneralSettings
         form={form}

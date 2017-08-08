@@ -14,6 +14,10 @@ class HomeView extends React.Component {
     form: PropTypes.object,
     newItem: PropTypes.func,
     getTimeZone: PropTypes.func,
+    getSelectedItem: PropTypes.func,
+    params: PropTypes.object,
+    currentUser: PropTypes.object,
+    uniqueName: PropTypes.string,
   }
 
   constructor (props) {

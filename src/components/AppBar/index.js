@@ -4,8 +4,6 @@ import IconButton from 'material-ui/IconButton'
 import { Link } from 'react-router'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import classNames from 'classnames'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
 import Snackbar from 'material-ui/Snackbar'
 import Modal from '../../components/modal'
 
@@ -40,13 +38,14 @@ const unselectAppBar = (snack, closeSnack, editMode, textMode) => (
   </div>
 )
 
-
 export class AppBar extends React.Component {
   static propTypes = {
     selected: PropTypes.number,
     isMobile: PropTypes.bool,
     unselect: PropTypes.func,
     editMode: PropTypes.bool,
+    textMode: PropTypes.string,
+    selectedIds: PropTypes.array,
   }
 
   constructor () {
@@ -117,7 +116,12 @@ export class AppBar extends React.Component {
               <Close />
             </IconButton>
             { selected ? <span className='title'>{selected} selected</span> : ''}
-            { selected === 1 ? <Link to={`/edit/${this.props.selectedIds[0]}`}><IconButton ><EditIcon /></IconButton></Link> : '' }
+            { selected === 1
+              ? (
+                <Link to={`/edit/${this.props.selectedIds[0]}`}>
+                  <IconButton ><EditIcon /></IconButton>
+                </Link>
+                ) : '' }
             <IconButton onClick={this.handleOpen}>
               <Delete />
             </IconButton>

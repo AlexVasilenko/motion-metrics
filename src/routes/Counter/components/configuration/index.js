@@ -55,10 +55,13 @@ const unitSettingsFields = ['m kg s', 'cm kg s', 'mm g s', 'in lb s']
 const reportComponents = ['productivity', 'timeUsage', 'cycleStatistics', 'passBucketPayload', 'passBacketDistribution']
 
 class Configuration extends React.Component {
-  PropTypes = {
-    user: PropTypes.object,
+  static propTypes = {
     isEditMode: PropTypes.bool,
     onSubmit: PropTypes.func,
+    editItem: PropTypes.object,
+    unit: PropTypes.string,
+    values: PropTypes.object,
+    back: PropTypes.func,
   }
 
   static defaultProps = {
@@ -122,7 +125,7 @@ class Configuration extends React.Component {
             open: false,
           },
           passBucketPayload: {
-            ...passBacketDistribution,
+            ...passBucketPayload,
             open: false,
           },
         }
@@ -144,7 +147,7 @@ class Configuration extends React.Component {
         sync: roles,
       }, (data) => {
         if (data.status === 'pending') {
-          
+
         } else if (data.status === 'invalid') {
           this.setState({
             errors: data.errors,
@@ -156,7 +159,7 @@ class Configuration extends React.Component {
           })
         }
       })
-      
+
       validFn.validator(validateValues)
     }
   }
@@ -281,7 +284,7 @@ class Configuration extends React.Component {
               <TextField
                 hintText='Equipment'
                 name='equipment'
-                ref={(equipment) => this.equipment = equipment}
+                ref={(equipment) => { this.equipment = equipment }}
             /><br />
             </div>
             <div className='form-control focusable-icon'>

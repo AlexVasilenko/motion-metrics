@@ -13,6 +13,7 @@ class HomeView extends React.Component {
     selectedItems: PropTypes.number.isRequired,
     unSelect: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
+    selectedIds: PropTypes.array,
   }
 
   constructor (props) {

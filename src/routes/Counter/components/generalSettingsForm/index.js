@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Slider from 'material-ui/Slider'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
@@ -11,9 +10,8 @@ import TextField from 'material-ui/TextField'
 import Stepper from './../Stepper'
 import SelectFields from './../SelectFields'
 import AutoComplete from 'material-ui/AutoComplete'
-import Chip from 'material-ui/Chip'
 import 'babel-polyfill'
-import validator from '../../../../components/validator'
+import Validator from '../../../../components/validator'
 import { Link } from 'react-router'
 
 import {
@@ -34,12 +32,14 @@ import People from 'material-ui/svg-icons/social/people'
 import './styles.scss'
 
 class GeneralSettings extends React.Component {
-  PropTypes = {
+  static propTypes = {
     user: PropTypes.object,
     isEditMode: PropTypes.bool,
     saveItem: PropTypes.func,
     form: PropTypes.object,
     getTimeZone: PropTypes.func,
+    editItem: PropTypes.object,
+    onSubmit: PropTypes.func,
   }
 
   constructor (props) {
@@ -60,6 +60,7 @@ class GeneralSettings extends React.Component {
     this.handleRecipient = (event, index, value) => this.setState({ recipient: value })
     this.handleTimeZone = (event, value) => this.setState({ from: value.toString() })
     this.handleDate = (event, value) => this.setState({ reportTime: value })
+    this.repeatFn = this.repeatChange.bind(this)
 
     if (props.editItem && props.editItem.id) {
       const {
@@ -147,7 +148,7 @@ class GeneralSettings extends React.Component {
         reportTime: this.state.reportTime,
         repeat: this.state.repeat.map(item => item.number),
       }
-      const validFn = new validator({
+      const validFn = new Validator({
         sync: roles,
         async: {
           uniqueTitle: {
@@ -161,12 +162,12 @@ class GeneralSettings extends React.Component {
             }
           }
         }
-       }, (data) => {
+      }, (data) => {
         if (data.status === 'pending') {
-          
+
         } else if (data.status === 'invalid') {
           this.setState({
-           errors: data.errors,
+            errors: data.errors,
           })
         } else {
           this.props.onSubmit('generalSetting', {
@@ -176,13 +177,13 @@ class GeneralSettings extends React.Component {
           })
         }
       })
-      
+
       validFn.validator(validateValues)
     }
   }
 
   render () {
-    const { isEditMode, user, form } = this.props
+    const { isEditMode, form } = this.props
     return (
       <div className='container'>
         <div className='step'>
@@ -194,7 +195,7 @@ class GeneralSettings extends React.Component {
                   onToggle={this.onChange}
                   defaultToggled={this.state.enabled}
                   label={this.state.enabled ? 'Task enabled' : 'Task disabled'}
-                  ref={(enabled) => this.enabled = enabled}
+                  ref={(enabled) => { this.enabled = enabled }}
                 />
               </div>
               <TextField
@@ -203,7 +204,7 @@ class GeneralSettings extends React.Component {
                 placeholder='Task Title'
                 errorText={this.state.errors.title}
                 name='title'
-                ref={(title) => this.title = title}
+                ref={(title) => { this.title = title }}
               /><br />
             </span>
             <div className='form-control focusable-icon'>
@@ -275,7 +276,7 @@ class GeneralSettings extends React.Component {
                 <Repeat />
                 <SelectFields
                   className='fitElement'
-                  onChange={this.repeatChange.bind(this)}
+                  onChange={this.repeatFn}
                   text={this.state.repeat.map(item => item.value).join(',')}
                   errorText={this.state.errors.repeat}
                   fields={itemsForSelectFields} />
